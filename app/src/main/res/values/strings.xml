@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BattleCards</string>
+    <string name="login_success">You have successfully login!</string>
+    <string name="login">Google Login</string>
 </resources>

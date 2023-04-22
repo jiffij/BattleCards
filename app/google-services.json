@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "965956087238",
+    "project_id": "battlecards-527c9",
+    "storage_bucket": "battlecards-527c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965956087238:android:6a9a67a99481a3c85456c7",
+        "android_client_info": {
+          "package_name": "com.example.battlecards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965956087238-e09lifruu10l40mv5b635mjprt211th2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.battlecards",
+            "certificate_hash": "6b5c8b23bdd307cb755999f60c935bc3b43a7be9"
+          }
+        },
+        {
+          "client_id": "965956087238-9ul7nvn3j8g1f6ml51f9uah7fg5ef5k7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSTqK8TLLJcZDXxBUStFhan1PIBwHS1WA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965956087238-9ul7nvn3j8g1f6ml51f9uah7fg5ef5k7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
