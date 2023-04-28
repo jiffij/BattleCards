@@ -69,6 +69,21 @@ public class GameModePage extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String word = (String) parent.getItemAtPosition(position);
                 Toast.makeText(GameModePage.this, "You clicked on " + word, Toast.LENGTH_SHORT).show();
+                switch(word){
+                    case "Create a Room":
+                        Intent intent1 = new Intent(GameModePage.this, OpenRoom.class);
+                        intent1.putExtra("game", game);
+                        startActivity(intent1);
+                        break;
+                    case "Join a Room":
+                        Intent intent2 = new Intent(GameModePage.this, JoinRoom.class);
+                        intent2.putExtra("game", game);
+                        startActivity(intent2);
+                        break;
+                    default:
+                        break;
+                }
+
             }
         });
 

@@ -1,5 +1,7 @@
 package com.example.battlecards;
 
+import com.google.firebase.database.DataSnapshot;
+
 public interface MyRunnable {
-    void run(String value);
+    void run(DataSnapshot snapshot);
 }
