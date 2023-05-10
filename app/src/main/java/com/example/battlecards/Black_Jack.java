@@ -34,7 +34,6 @@ public class Black_Jack extends AppCompatActivity {
     boolean playAgain;
     int PlayerBattleCoins;
     int playerBet;
-    int playerMove;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,18 +148,14 @@ public class Black_Jack extends AppCompatActivity {
         btn_hit.setVisibility(View.VISIBLE);
         btn_stand.setVisibility(View.VISIBLE);
 
-        // Reset the playerMove and wait for the user input
-        playerMove = 0;
         btn_hit.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                playerMove = 1;
                 hit();
                 check();
                 Toast.makeText(Black_Jack.this, "You clicked 1!", Toast.LENGTH_SHORT).show();}
         });
         btn_stand.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                playerMove = 2;
                 stand();
                 check();
                 Toast.makeText(Black_Jack.this, "You clicked 2!", Toast.LENGTH_SHORT).show();}
