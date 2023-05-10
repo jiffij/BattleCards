@@ -5,46 +5,130 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/pokertablezoomin"
+    android:orientation="horizontal"
     tools:context=".Black_Jack">
 
     <TextView
-        android:id="@+id/player_money"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="145dp"
-        android:layout_marginEnd="135dp"
-        android:text="Player Money: $1000"
-        android:textColor="#03A9F4"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/sb_bet"
-        app:layout_constraintEnd_toStartOf="@+id/sb_bet"
+        android:id="@+id/txt_dealer_card_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sb_bet" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.26" />
+
+    <Button
+        android:id="@+id/btn_hit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#D4AF37"
+        android:text="Hit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.036"
+        app:layout_constraintStart_toEndOf="@+id/btn_stand"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.625" />
+
+    <Button
+        android:id="@+id/btn_stand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="292dp"
+        android:backgroundTint="#EBD43737"
+        android:text="Stand"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.625" />
+
+    <TextView
+        android:id="@+id/txt_bet_now"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="152dp"
+        android:gravity="start"
+        android:text="Player's bet: $0"
+        android:textAlignment="viewStart"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_player_bc"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/txt_player_bc"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="152dp"
+        android:gravity="start"
+        android:text="Player's Remaining Battlecoins: \n$1000"
+        android:textAlignment="viewStart"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.601" />
 
     <SeekBar
         android:id="@+id/sb_bet"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="201dp"
-        android:layout_marginBottom="120dp"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="136dp"
         android:indeterminate="false"
         android:max="10"
         android:progress="0"
+        android:progressTint="@color/white"
+        android:thumbTint="#D4AF37"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/player_money"
-        app:layout_constraintTop_toBottomOf="@+id/txt_bet" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_bet"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/txt_bet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="232dp"
-        android:text="Default"
-        app:layout_constraintBottom_toTopOf="@+id/sb_bet"
-        app:layout_constraintStart_toStartOf="@+id/sb_bet"
+        android:layout_marginTop="216dp"
+        android:text="Your bet: 0 bc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.755"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_bet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:backgroundTint="#D4AF37"
+        android:text="Bet!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sb_bet"
+        app:layout_constraintHorizontal_bias="0.423"
+        app:layout_constraintStart_toEndOf="@+id/txt_player_bc"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.465" />
+
+    <TextView
+        android:id="@+id/txt_player_card_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.816" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
