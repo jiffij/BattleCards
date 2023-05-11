@@ -34,7 +34,7 @@ public class GameModePage extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     GoogleSignInClient googleSignInClient;
     ListView scrollMenu;
-    String[] Games = {"AI", "Random", "Nearby rooms", "Join a Room", "Create a Room"};
+    String[] Games = {"Solo Play", "Random", "Nearby rooms", "Join a Room", "Create a Room"};
     TextView gameTitle;
 
     @Override
@@ -70,15 +70,20 @@ public class GameModePage extends AppCompatActivity {
                 String word = (String) parent.getItemAtPosition(position);
                 Toast.makeText(GameModePage.this, "You clicked on " + word, Toast.LENGTH_SHORT).show();
                 switch(word){
-                    case "Create a Room":
-                        Intent intent1 = new Intent(GameModePage.this, OpenRoom.class);
+                    case "Solo Play":
+                        Intent intent1 = new Intent(GameModePage.this, Black_Jack.class);
                         intent1.putExtra("game", game);
                         startActivity(intent1);
                         break;
-                    case "Join a Room":
-                        Intent intent2 = new Intent(GameModePage.this, JoinRoom.class);
+                    case "Create a Room":
+                        Intent intent2 = new Intent(GameModePage.this, OpenRoom.class);
                         intent2.putExtra("game", game);
                         startActivity(intent2);
+                        break;
+                    case "Join a Room":
+                        Intent intent3 = new Intent(GameModePage.this, JoinRoom.class);
+                        intent3.putExtra("game", game);
+                        startActivity(intent3);
                         break;
                     default:
                         break;

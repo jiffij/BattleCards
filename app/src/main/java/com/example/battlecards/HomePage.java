@@ -75,11 +75,11 @@ public class HomePage extends AppCompatActivity {
                 String word = (String) parent.getItemAtPosition(position);
                 Toast.makeText(HomePage.this, "You clicked on " + word, Toast.LENGTH_SHORT).show();
                 switch(word) {
-                    case "Black Jack":
-                        Intent intent1 = new Intent(HomePage.this, Black_Jack.class);
-                        intent1.putExtra("game", word);
-                        startActivity(intent1);
-                        break;
+//                    case "Black Jack":
+//                        Intent intent1 = new Intent(HomePage.this, Black_Jack.class);
+//                        intent1.putExtra("game", word);
+//                        startActivity(intent1);
+//                        break;
                     default:
                         Intent intent = new Intent(HomePage.this, GameModePage.class);
                         intent.putExtra("game", word);

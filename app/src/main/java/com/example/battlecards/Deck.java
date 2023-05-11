@@ -5,7 +5,7 @@ import java.util.Collections;
 
 public class Deck {
     private ArrayList<Card> cards;
-    private int numOfCards = 0;
+    int numOfCards = 0;
     String spade = "\u2660";
     String heart = "\u2665";
     String club = "\u2663";
@@ -21,6 +21,7 @@ public class Deck {
         for(int i=0; i<4; i++){
             for(int j=0; j<13; j++){
                 this.cards.add(new Card(cardSuit[i], cardValue[j]));
+                this.numOfCards += 1;
             }
         }
     }
@@ -35,17 +36,18 @@ public class Deck {
     //********************************************************************************************
     public void removeCard(int i){
         this.cards.remove(i);
-        numOfCards -= 1;
+        this.numOfCards -= 1;
     }
     //********************************************************************************************
     public void addCard(Card newCard){
         this.cards.add(newCard);
-        numOfCards += 1;
+        this.numOfCards += 1;
     }
     //********************************************************************************************
     public void draw(Deck cardDeck){
         this.cards.add(cardDeck.getCard(0));
         cardDeck.removeCard(0);
+        this.numOfCards += 1;
     }
     //********************************************************************************************
     public int cardsTotalValue(){
@@ -62,10 +64,11 @@ public class Deck {
                 case "7": cardsTotalValue +=7; break;
                 case "8": cardsTotalValue +=8; break;
                 case "9": cardsTotalValue +=9; break;
-                case "10": cardsTotalValue +=10; break;
-                case "J": cardsTotalValue +=10; break;
-                case "Q": cardsTotalValue +=10; break;
-                case "K": cardsTotalValue +=10; break;
+                case "10":
+                case "J":
+                case "Q":
+                case "K":
+                    cardsTotalValue +=10; break;
                 case "A": aces +=1; break;
             }
             for (int i=0; i< aces; i++){
@@ -110,9 +113,6 @@ public class Deck {
         return cardsOutput ;
     }
     //********************************************************************************************
-    public int numOfCards(){
-        return numOfCards;
-    }
 
 }
 
