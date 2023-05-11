@@ -2,6 +2,7 @@ package com.example.battlecards;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Deck {
     private ArrayList<Card> cards;
@@ -11,6 +12,7 @@ public class Deck {
     String diamond = "\u2666";
     String cardSuit[] = {spade,heart,club,diamond};
     String cardValue[] = {"A","2","3","4","5","6","7","8","9","10","J","Q","K",};
+    int cardIntValue[] = {1,2,3,4,5,6,7,8,9,10,11,12,13};
 
     public Deck(){
         this.cards = new ArrayList<Card>();
@@ -19,7 +21,7 @@ public class Deck {
     public void addAllCards(){
         for(int i=0; i<4; i++){
             for(int j=0; j<13; j++){
-                this.cards.add(new Card(cardSuit[i], cardValue[j]));
+                this.cards.add(new Card(cardSuit[i], cardValue[j], cardIntValue[i]));
             }
         }
     }
@@ -44,6 +46,36 @@ public class Deck {
         this.cards.add(cardDeck.getCard(0));
         cardDeck.removeCard(0);
     }
+    //********************************************************************************************
+    public void moveToTopFrom(Deck cardDeck, int i){
+        this.cards.add(0, cardDeck.getCard(i));
+        cardDeck.removeCard(i);
+    }
+    public List<Card> getTopNCards(int N){
+        return this.cards.subList(0, N);
+    }
+    public void removeNCards(List<Card> cardList){
+        this.cards.removeAll(cardList);
+    }
+    public void drawTopNCards(Deck cardDeck, int N){
+        List<Card> cardList = cardDeck.getTopNCards(N);
+        this.cards.addAll(cardList);
+        cardDeck.removeNCards(cardList);
+    }
+
+    public void moveAllFrom(Deck cardDeck){
+        int length = cardDeck.length();
+        this.drawTopNCards(cardDeck, length);
+    }
+
+    public boolean isEmpty(){
+        return this.cards.isEmpty();
+    }
+
+    public int length(){
+        return this.cards.size();
+    }
+
     //********************************************************************************************
     public int cardsTotalValue(){
         int cardsTotalValue = 0;

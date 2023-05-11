@@ -80,6 +80,9 @@ public class GameModePage extends AppCompatActivity {
                         intent2.putExtra("game", game);
                         startActivity(intent2);
                         break;
+                    case "AI":
+                        startActivity(new Intent(GameModePage.this, SpeedLauncher.class));
+                        break;
                     default:
                         break;
                 }
