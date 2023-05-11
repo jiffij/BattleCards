@@ -5,6 +5,7 @@ import java.util.Collections;
 
 public class Deck {
     private ArrayList<Card> cards;
+    private int numOfCards = 0;
     String spade = "\u2660";
     String heart = "\u2665";
     String club = "\u2663";
@@ -34,10 +35,12 @@ public class Deck {
     //********************************************************************************************
     public void removeCard(int i){
         this.cards.remove(i);
+        numOfCards -= 1;
     }
     //********************************************************************************************
     public void addCard(Card newCard){
         this.cards.add(newCard);
+        numOfCards += 1;
     }
     //********************************************************************************************
     public void draw(Deck cardDeck){
@@ -105,6 +108,10 @@ public class Deck {
         String cardsOutput = "";
         cardsOutput += " "+ this.cards.get(0) + ", ?";
         return cardsOutput ;
+    }
+    //********************************************************************************************
+    public int numOfCards(){
+        return numOfCards;
     }
 
 }

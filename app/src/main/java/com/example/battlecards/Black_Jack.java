@@ -22,6 +22,7 @@ public class Black_Jack extends AppCompatActivity {
     private TextView txt_bet;
     private TextView txt_bet_now;
     private TextView txt_dealer_card_value;
+    private TextView txt_message;
     private TextView txt_player_bc;
     private TextView txt_player_card_value;
     private TextView txt_round;
@@ -53,6 +54,7 @@ public class Black_Jack extends AppCompatActivity {
         sb_bet = (SeekBar) findViewById(R.id.sb_bet);
         txt_bet = (TextView) findViewById(R.id.txt_bet);
         txt_bet_now = (TextView) findViewById(R.id.txt_bet_now);
+        txt_message = (TextView) findViewById(R.id.txt_message);
         txt_dealer_card_value = (TextView) findViewById(R.id.txt_dealer_card_value);
         txt_player_bc = (TextView) findViewById(R.id.txt_player_bc);
         txt_player_card_value = (TextView) findViewById(R.id.txt_player_card_value);
@@ -95,6 +97,7 @@ public class Black_Jack extends AppCompatActivity {
         txt_bet_now.setText("Player's bet: " + playerBet + " bc");
         sb_bet.setVisibility(View.VISIBLE);
         txt_bet.setVisibility(View.VISIBLE);
+        txt_message.setVisibility(View.INVISIBLE);
         txt_player_card_value.setVisibility(View.INVISIBLE);
         txt_dealer_card_value.setVisibility(View.INVISIBLE);
     }
@@ -108,7 +111,7 @@ public class Black_Jack extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(mContext, "Slide your bet!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "Slide your bet!", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -140,7 +143,9 @@ public class Black_Jack extends AppCompatActivity {
                 startRound();
             }
             else {
-                Toast.makeText(Black_Jack.this, "You cannot bet 0 BattleCoins!", Toast.LENGTH_SHORT).show();
+                txt_message.setText("You cannot bet 0 BattleCoins!");
+                // txt_message.setVisibility(View.VISIBLE);
+                // Todo: Delay and set Invisible
             }
 
         }
@@ -164,13 +169,13 @@ public class Black_Jack extends AppCompatActivity {
             @Override public void onClick(View v) {
                 hit();
                 check();
-                Toast.makeText(Black_Jack.this, "You clicked 1!", Toast.LENGTH_SHORT).show();}
+            }
         });
         btn_stand.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 stand();
                 check();
-                Toast.makeText(Black_Jack.this, "You clicked 2!", Toast.LENGTH_SHORT).show();}
+            }
         });
     }
 
@@ -214,7 +219,6 @@ public class Black_Jack extends AppCompatActivity {
     void computerTurn() {
         while (dealerDeck.cardsTotalValue() < 17) {
             dealerDeck.draw(mainDeck);
-            Toast.makeText(Black_Jack.this, "Dealer draw a card!", Toast.LENGTH_SHORT).show();
             String dealer_value = "" + dealerDeck.cardsTotalValue();
             txt_dealer_card_value.setText(dealer_value);
         }
@@ -222,43 +226,54 @@ public class Black_Jack extends AppCompatActivity {
     }
 
     void update() {
-        if (playerDeck.cardsTotalValue() == dealerDeck.cardsTotalValue()
+        // Todo
+        if (playerDeck.cardsTotalValue() == 21 && playerDeck.numOfCards() == 2) {
+            txt_message.setText("Black Jack!\nYou gain 1.5*" + playerBet + " BattleCoins!");
+            PlayerBattleCoins = (int) (PlayerBattleCoins + playerBet*2.5);
+        } else if (playerDeck.cardsTotalValue() == dealerDeck.cardsTotalValue()
                 && playerDeck.cardsTotalValue() <= 21) {
-            Toast.makeText(Black_Jack.this, "Draw!", Toast.LENGTH_SHORT).show();
+            txt_message.setText("Draw!\nYou didn't gain or lose any BattleCoins");
             PlayerBattleCoins = PlayerBattleCoins + playerBet;
         } else if (playerDeck.cardsTotalValue() <= 21 && dealerDeck.cardsTotalValue() <= 21
                 && (playerDeck.cardsTotalValue() > dealerDeck.cardsTotalValue())) {
-            Toast.makeText(Black_Jack.this, "You Win!, you gain " + playerBet + "BattleCoins!", Toast.LENGTH_SHORT).show();
+            txt_message.setText("You Win!\nYou gain " + playerBet + " BattleCoins!");
             PlayerBattleCoins = PlayerBattleCoins + playerBet*2;
         } else if (playerDeck.cardsTotalValue() <= 21 && dealerDeck.cardsTotalValue() <= 21
                 && (playerDeck.cardsTotalValue() < dealerDeck.cardsTotalValue())) {
-            Toast.makeText(Black_Jack.this, "You Lose!, you loss " + playerBet + "BattleCoins!", Toast.LENGTH_SHORT).show();
+            txt_message.setText("You Lose!\nYou loss " + playerBet + " BattleCoins!");
             //PlayerBattleCoins = PlayerBattleCoins - playerBet;
         } else if (playerDeck.cardsTotalValue() <= 21 && dealerDeck.cardsTotalValue() > 21) {
-            Toast.makeText(Black_Jack.this, "Dealer Bust and You Win, you gain " + playerBet + "BattleCoins!", Toast.LENGTH_SHORT).show();
+            txt_message.setText("Dealer Bust and You Win!\nYou gain " + playerBet + " BattleCoins!");
             PlayerBattleCoins = PlayerBattleCoins + playerBet*2;
         } else if (playerDeck.cardsTotalValue() > 21 && dealerDeck.cardsTotalValue() <= 21) {
-            Toast.makeText(Black_Jack.this, "You Bust and You Lose, you loss " + playerBet + "BattleCoins!", Toast.LENGTH_SHORT).show();
+            txt_message.setText("You Bust and You Lose!\nYou loss " + playerBet + " BattleCoins!");
             //PlayerBattleCoins = PlayerBattleCoins - playerBet;
         }
+        txt_message.setVisibility(View.VISIBLE);
         txt_player_bc.setText("Player's Remaining BattleCoins: \n" + PlayerBattleCoins + " bc");
         txt_bet_now.setText("Player's bet: " + playerBet + " bc");
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                playAgain();
-            }
-        }, 3000);
+        handler.postDelayed(() -> playAgain(), 3000);
     }
 
     void playAgain() {
-        if (PlayerBattleCoins > 0 && round <= 5) {
-            playerDeck.returnAllCards(mainDeck);
-            dealerDeck.returnAllCards(mainDeck);
+        playerDeck.returnAllCards(mainDeck);
+        dealerDeck.returnAllCards(mainDeck);
+        if (PlayerBattleCoins > 0 && round < 5) {
             initState();
+        } else if (PlayerBattleCoins >= 2500) {
+            txt_message.setText("Congratulations! You have win the game by exceeding 2000 BattleCoins!");
+            txt_message.setVisibility(View.VISIBLE);
+            // Todo: Navigate to result page
         }
         else if (PlayerBattleCoins == 0) {
-
+            txt_message.setText("Oops! You have lose the game by losing all BattleCoins!");
+            txt_message.setVisibility(View.VISIBLE);
+            // Todo: Navigate to result page
+        }
+        else {
+            txt_message.setText("Oops! You have lose the game by unable to reach 2500 BattleCoins in 5 rounds!");
+            txt_message.setVisibility(View.VISIBLE);
+            // Todo: Navigate to result page
         }
     }
 
