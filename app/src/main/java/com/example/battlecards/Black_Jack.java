@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,22 +19,26 @@ public class Black_Jack extends AppCompatActivity {
     private Button btn_hit;
     private Button btn_stand;
     private SeekBar sb_bet;
+    private TextView txt_bet;
+    private TextView txt_bet_now;
     private TextView txt_dealer_card_value;
     private TextView txt_player_bc;
     private TextView txt_player_card_value;
-    private TextView txt_bet;
-    private TextView txt_bet_now;
+    private TextView txt_round;
     private Context mContext;
+
 
     // For the game
     Deck mainDeck;
     Deck playerDeck;
     Deck dealerDeck;
     boolean gameEnd;
+    Handler handler = new Handler();
     boolean playerFinish;
     boolean playAgain;
     int PlayerBattleCoins;
     int playerBet;
+    int round;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +51,16 @@ public class Black_Jack extends AppCompatActivity {
         btn_hit = (Button) findViewById(R.id.btn_hit);
         btn_stand = (Button) findViewById(R.id.btn_stand);
         sb_bet = (SeekBar) findViewById(R.id.sb_bet);
+        txt_bet = (TextView) findViewById(R.id.txt_bet);
+        txt_bet_now = (TextView) findViewById(R.id.txt_bet_now);
         txt_dealer_card_value = (TextView) findViewById(R.id.txt_dealer_card_value);
         txt_player_bc = (TextView) findViewById(R.id.txt_player_bc);
         txt_player_card_value = (TextView) findViewById(R.id.txt_player_card_value);
-        txt_bet = (TextView) findViewById(R.id.txt_bet);
-        txt_bet_now = (TextView) findViewById(R.id.txt_bet_now);
+        txt_round = (TextView) findViewById(R.id.txt_round);
         mContext = Black_Jack.this;
         // Default starting BattleCoins is 1000 bc
         PlayerBattleCoins = 1000;
+        round = 0;
         bindViews();
 
         initState();
@@ -79,10 +86,15 @@ public class Black_Jack extends AppCompatActivity {
         playerFinish = false;
         playAgain = true;
         playerBet=0;
-        txt_player_bc.setText("Player's Remaining BattleCoins: \n" + PlayerBattleCoins + " bc");
-        txt_bet_now.setText("Player's bet: " + playerBet + " bc");
+        round += 1;
+        txt_round.setText("Round: " + round + " out of 5");
+        btn_bet.setVisibility(View.VISIBLE);
         btn_hit.setVisibility(View.INVISIBLE);
         btn_stand.setVisibility(View.INVISIBLE);
+        txt_player_bc.setText("Player's Remaining BattleCoins: \n" + PlayerBattleCoins + " bc");
+        txt_bet_now.setText("Player's bet: " + playerBet + " bc");
+        sb_bet.setVisibility(View.VISIBLE);
+        txt_bet.setVisibility(View.VISIBLE);
         txt_player_card_value.setVisibility(View.INVISIBLE);
         txt_dealer_card_value.setVisibility(View.INVISIBLE);
     }
@@ -231,6 +243,23 @@ public class Black_Jack extends AppCompatActivity {
         }
         txt_player_bc.setText("Player's Remaining BattleCoins: \n" + PlayerBattleCoins + " bc");
         txt_bet_now.setText("Player's bet: " + playerBet + " bc");
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                playAgain();
+            }
+        }, 3000);
+    }
+
+    void playAgain() {
+        if (PlayerBattleCoins > 0 && round <= 5) {
+            playerDeck.returnAllCards(mainDeck);
+            dealerDeck.returnAllCards(mainDeck);
+            initState();
+        }
+        else if (PlayerBattleCoins == 0) {
+
+        }
     }
 
     //********************************************************************************************
