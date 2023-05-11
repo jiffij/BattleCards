@@ -1,5 +1,4 @@
-import com.example.battlecards.Deck;
-import com.example.battlecards.PLAYERS;
+package com.example.battlecards;
 
 enum POOL{
     LEFT, RIGHT
@@ -18,6 +17,8 @@ public class Speed {
     Deck rightPool;
     boolean AWant = false;
     boolean BWant = false;
+    boolean GameContinue = false;
+    PLAYERS winner = PLAYERS.NONE;
 
     public Speed(){
         mainDeck = new Deck();
@@ -102,10 +103,15 @@ public class Speed {
 
 
 
-    public void gameLoop(){
-        while(checkWin() == PLAYERS.NONE){
+    public boolean gameLoop(){
+//        PLAYERS winner = PLAYERS.NONE;
+//        while(GameContinue){
             flipNewCard();
-        }
+            winner = checkWin();
+//            if(winner != PLAYERS.NONE) GameContinue = false;
+//        }
+        if(winner != PLAYERS.NONE) return true;
+        return false;
     }
 
 }

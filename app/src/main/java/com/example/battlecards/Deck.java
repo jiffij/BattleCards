@@ -11,6 +11,7 @@ public class Deck {
     String club = "\u2663";
     String diamond = "\u2666";
     String cardSuit[] = {spade,heart,club,diamond};
+    String cardSuitAlpha[] = {"s", "h", "c", "d"};
     String cardValue[] = {"A","2","3","4","5","6","7","8","9","10","J","Q","K",};
     int cardIntValue[] = {1,2,3,4,5,6,7,8,9,10,11,12,13};
 
@@ -21,7 +22,7 @@ public class Deck {
     public void addAllCards(){
         for(int i=0; i<4; i++){
             for(int j=0; j<13; j++){
-                this.cards.add(new Card(cardSuit[i], cardValue[j], cardIntValue[i]));
+                this.cards.add(new Card(cardSuit[i], cardValue[j], cardIntValue[i], cardSuitAlpha[i]));
             }
         }
     }

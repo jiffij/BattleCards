@@ -4,11 +4,13 @@ public class Card {
     String suit;
     String value;
     int realValue;
+    String suitAlpha;
 
-    public Card(String suit, String value, int realValue){
+    public Card(String suit, String value, int realValue, String suitAlpha){
         this.suit = suit;
         this.value = value;
         this.realValue = realValue;
+        this.suitAlpha = suitAlpha;
     }
     //********************************************************************************************
     public String getSuit(){
@@ -21,6 +23,11 @@ public class Card {
     //********************************************************************************************
     public String toString(){
         return this.suit + this.value;
+    }
+
+    public String toImageString(){
+        String imgName = this.suitAlpha+this.value;
+        return imgName.toLowerCase();
     }
 
     public boolean isNeighbor(Card card){
