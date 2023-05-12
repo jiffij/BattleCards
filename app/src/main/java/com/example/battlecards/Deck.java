@@ -76,6 +76,9 @@ public class Deck {
         }
         return cardsname;
     }
+    public List<Card> getAllCard(){
+        return cards;
+    }
     public Card getCard(String key){
         for(Card card : cards){
             if(card.toImageString().equals(key)) return card;

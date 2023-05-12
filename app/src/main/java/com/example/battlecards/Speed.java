@@ -52,7 +52,7 @@ public class Speed {
         System.out.println(ADeck.toString());
     }
 
-    private PLAYERS checkWin(){
+    public PLAYERS checkWin(){
          if(ADeck.isEmpty() && AHand.isEmpty()){
              return PLAYERS.A;
          }else if(BDeck.isEmpty() && BHand.isEmpty()){
@@ -66,6 +66,13 @@ public class Speed {
         List<String> lr = new ArrayList<String>();
         lr.add(leftPool.getCard(0).toImageString());
         lr.add(rightPool.getCard(0).toImageString());
+        return lr;
+    }
+
+    public List<Card> poolCard(){
+        List<Card> lr = new ArrayList<Card>();
+        lr.add(leftPool.getCard(0));
+        lr.add(rightPool.getCard(0));
         return lr;
     }
 

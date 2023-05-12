@@ -15,6 +15,7 @@ import java.util.Map;
 public class SpeedDeck extends UIDeck {
 
     Speed speed;
+    SpeedEnemy enemy;
     public SpeedDeck(Stage stage, int screenWidth, int screenHeight) {
         super(stage, screenWidth, screenHeight);
         this.speed = new Speed();
@@ -26,6 +27,7 @@ public class SpeedDeck extends UIDeck {
         midYPos = screenHeight/2-cardHeight/2;
         handStartX = screenWidth/2 - 2*(cardWidth+10);
         space = cardWidth + 10;
+        enemy = new SpeedAIEnemy(this);
     }
     public void load(){
         String cardSuitAlpha[] = {"s", "h", "c", "d"};
@@ -101,7 +103,10 @@ public class SpeedDeck extends UIDeck {
     }
 
     public void update(){
-        speed.gameLoop();
+        if(speed.gameLoop()){
+            System.out.println("win");
+            return;
+        }
         List<String> lr = this.speed.pool();
         if(!lr.get(0).equals(left)){
             System.out.println("add to left pool");

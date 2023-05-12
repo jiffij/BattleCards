@@ -29,7 +29,8 @@ public class SpeedUI extends ApplicationAdapter {
     private Stage stage;
     int screenWidth;
     int screenHeight;
-    UIDeck speedDeck;
+    SpeedDeck speedDeck;
+    SpeedEnemy speedEnemy;
 
     @Override
     public void create () {
@@ -46,7 +47,8 @@ public class SpeedUI extends ApplicationAdapter {
         speedDeck.addActor("back");
         Gdx.input.setInputProcessor(stage);
         speedDeck.InitAnim();
-
+        speedEnemy = new SpeedAIEnemy(speedDeck);
+        speedEnemy.start();
     }
 
     @Override
@@ -63,7 +65,6 @@ public class SpeedUI extends ApplicationAdapter {
         speedDeck.update();
         stage.act();
         stage.draw();
-
     }
 
     @Override
