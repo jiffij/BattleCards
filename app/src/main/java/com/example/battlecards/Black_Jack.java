@@ -74,7 +74,7 @@ public class Black_Jack extends AppCompatActivity {
         // Todo: Assign player into player number and change the number of player
         // player 1 is the first player and the player in solo mode
         thisPlayer = 1;
-        numOfPlayer = 1;
+        numOfPlayer = 2;
 
         // Default starting BattleCoins is 1000 bc
         Player1BattleCoins = 1000;
@@ -317,8 +317,8 @@ public class Black_Jack extends AppCompatActivity {
                     gameEnd = true;
                 }
                 if (player1Finish) {
-                    currentPlayer += 1;
                     // player 2 turn
+                    currentPlayer += 1;
                 }
                 if (player1Finish && player2Finish && !gameEnd) {
                     computerTurn();
@@ -461,9 +461,11 @@ public class Black_Jack extends AppCompatActivity {
                 } else if (Player1BattleCoins == Player2BattleCoins) {
                     txt_message.setText("Both players own the same amount of bc, It is a Tie game!");
                     txt_message.setVisibility(View.VISIBLE);
+                    // Todo: Navigate to result page
                 } else {
                     txt_message.setText("Both players own 0 bc, It is a Tie game! Come on guys...");
                     txt_message.setVisibility(View.VISIBLE);
+                    // Todo: Navigate to result page
                 }
                 break;
             default:
