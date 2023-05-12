@@ -31,7 +31,7 @@ public class Card {
     }
 
     public boolean isNeighbor(Card card){
-        int difference = realValue - card.realValue;
+        int difference = this.realValue - card.realValue;
         difference = Math.abs(difference%11);
         return difference == 1? true: false;
     }

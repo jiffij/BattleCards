@@ -1,5 +1,8 @@
 package com.example.battlecards;
 
+import java.util.ArrayList;
+import java.util.List;
+
 enum POOL{
     LEFT, RIGHT
 }
@@ -37,8 +40,8 @@ public class Speed {
         mainDeck.shuffle();
 
         ADeck.drawTopNCards(mainDeck, 15);
-        BHand.drawTopNCards(mainDeck, 5);
-        ADeck.drawTopNCards(mainDeck, 15);
+        AHand.drawTopNCards(mainDeck, 5);
+        BDeck.drawTopNCards(mainDeck, 15);
         BHand.drawTopNCards(mainDeck, 5);
         left.drawTopNCards(mainDeck, 5);
         right.drawTopNCards(mainDeck, 5);
@@ -59,18 +62,27 @@ public class Speed {
          }
     }
 
-    public void reload(PLAYERS who){
-        Deck playerDeck = (who == PLAYERS.A)? ADeck: BDeck;
-        if(playerDeck.isEmpty()) return;
-        playerDeck.draw(mainDeck);
+    public List<String> pool(){
+        List<String> lr = new ArrayList<String>();
+        lr.add(leftPool.getCard(0).toImageString());
+        lr.add(rightPool.getCard(0).toImageString());
+        return lr;
     }
 
-    public boolean playCard(PLAYERS who, POOL lr, int card){
+    public void reload(PLAYERS who){
+        Deck playerHand = (who == PLAYERS.A)? AHand: BHand;
+        Deck fromDeck = (who == PLAYERS.A)? ADeck: BDeck;
+        if(fromDeck.isEmpty() || playerHand.length() >= 5) return;
+        playerHand.draw(fromDeck);
+    }
+
+    public boolean playCard(PLAYERS who, POOL lr, String id){
         Deck pool = (lr == POOL.LEFT)? leftPool: rightPool;
         Deck hand = (who == PLAYERS.A)? AHand: BHand;
-        if(hand.length()-1 < card) return false;
-        if(!pool.getCard(0).isNeighbor(hand.getCard(card))) return false;
-        pool.moveToTopFrom(hand, card);
+        Card card = hand.getCard(id);
+        if(card == null) return false;
+        if(!pool.getCard(0).isNeighbor(card)) return false;
+        pool.moveToTopFrom(hand, id);
         return true;
     }
 

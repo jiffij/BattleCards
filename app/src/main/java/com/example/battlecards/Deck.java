@@ -1,5 +1,7 @@
 package com.example.battlecards;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +24,7 @@ public class Deck {
     public void addAllCards(){
         for(int i=0; i<4; i++){
             for(int j=0; j<13; j++){
-                this.cards.add(new Card(cardSuit[i], cardValue[j], cardIntValue[i], cardSuitAlpha[i]));
+                this.cards.add(new Card(cardSuit[i], cardValue[j], cardIntValue[j], cardSuitAlpha[i]));
             }
         }
     }
@@ -52,6 +54,10 @@ public class Deck {
         this.cards.add(0, cardDeck.getCard(i));
         cardDeck.removeCard(i);
     }
+    public void moveToTopFrom(Deck cardDeck, String i){
+        this.cards.add(0, cardDeck.getCard(i));
+        cardDeck.removeCard(i);
+    }
     public List<Card> getTopNCards(int N){
         return this.cards.subList(0, N);
     }
@@ -62,6 +68,27 @@ public class Deck {
         List<Card> cardList = cardDeck.getTopNCards(N);
         this.cards.addAll(cardList);
         cardDeck.removeNCards(cardList);
+    }
+    public List<String> getAllCardName(){
+        List<String> cardsname = new ArrayList<>();
+        for(Card card: cards){
+            cardsname.add(card.toImageString());
+        }
+        return cardsname;
+    }
+    public Card getCard(String key){
+        for(Card card : cards){
+            if(card.toImageString().equals(key)) return card;
+        }
+        return null;
+    }
+    public void removeCard(String key){
+        for(int i = 0; i < this.cards.size(); i++){
+            if(this.cards.get(i).toImageString().equals(key)){
+                this.cards.remove(i);
+                break;
+            }
+        }
     }
 
     public void moveAllFrom(Deck cardDeck){
