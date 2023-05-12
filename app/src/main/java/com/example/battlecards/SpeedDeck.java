@@ -102,6 +102,11 @@ public class SpeedDeck extends UIDeck {
         }
     }
 
+    private void removePoolCard(){
+        this.removeActor(this.speed.leftPool.getAllCardName().subList(1,this.speed.leftPool.length()));
+        this.removeActor(this.speed.rightPool.getAllCardName().subList(1,this.speed.rightPool.length()));
+    }
+
     public void update(){
         if(speed.gameLoop()){
             System.out.println("win");
@@ -119,7 +124,7 @@ public class SpeedDeck extends UIDeck {
             this.getCard(right).setPosition(rightPos, midYPos);
             this.addActor(this.getCard(right));
         }
-
+        removePoolCard();
     }
 
 }
