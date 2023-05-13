@@ -69,26 +69,51 @@ public class GameModePage extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String word = (String) parent.getItemAtPosition(position);
                 Toast.makeText(GameModePage.this, "You clicked on " + word, Toast.LENGTH_SHORT).show();
-                switch(word){
-                    case "Solo Play":
-                        Intent intent1 = new Intent(GameModePage.this, Black_Jack.class);
-                        intent1.putExtra("game", game);
-                        startActivity(intent1);
+                switch (game) {
+                    case "Black Jack":
+                        switch(word){
+                            case "Solo Play":
+                                Intent intent1 = new Intent(GameModePage.this, Black_Jack.class);
+                                intent1.putExtra("game", game);
+                                startActivity(intent1);
+                                break;
+                            case "Create a Room":
+                                Intent intent2 = new Intent(GameModePage.this, OpenRoom.class);
+                                intent2.putExtra("game", game);
+                                startActivity(intent2);
+                                break;
+                            case "Join a Room":
+                                Intent intent3 = new Intent(GameModePage.this, JoinRoom.class);
+                                intent3.putExtra("game", game);
+                                startActivity(intent3);
+                                break;
+                            default:
+                                break;
+                        }
                         break;
-                    case "Create a Room":
-                        Intent intent2 = new Intent(GameModePage.this, OpenRoom.class);
-                        intent2.putExtra("game", game);
-                        startActivity(intent2);
-                        break;
-                    case "Join a Room":
-                        Intent intent3 = new Intent(GameModePage.this, JoinRoom.class);
-                        intent3.putExtra("game", game);
-                        startActivity(intent3);
-                        break;
+                    case "Speed":
+                        switch(word){
+                            case "Solo Play":
+                                Intent intent1 = new Intent(GameModePage.this, SpeedLauncher.class);
+                                intent1.putExtra("game", game);
+                                startActivity(intent1);
+                                break;
+                            case "Create a Room":
+                                Intent intent2 = new Intent(GameModePage.this, OpenRoom.class);
+                                intent2.putExtra("game", game);
+                                startActivity(intent2);
+                                break;
+                            case "Join a Room":
+                                Intent intent3 = new Intent(GameModePage.this, JoinRoom.class);
+                                intent3.putExtra("game", game);
+                                startActivity(intent3);
+                                break;
+                            default:
+                                break;
+                        }
                     default:
                         break;
                 }
-
             }
         });
 
