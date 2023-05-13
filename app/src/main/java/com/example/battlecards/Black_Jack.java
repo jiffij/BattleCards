@@ -8,15 +8,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
 
 public class Black_Jack extends AppCompatActivity {
 
     private Button btn_bet;
     private Button btn_hit;
     private Button btn_stand;
+    private ImageView img_player1card_1;
+    private ImageView img_player1card_2;
+    private ImageView img_player1card_3;
+    private ImageView img_player1card_4;
+    private ImageView img_player1card_5;
     private SeekBar sb_bet;
     private TextView txt_bet;
     private TextView txt_bet_now;
@@ -24,7 +32,8 @@ public class Black_Jack extends AppCompatActivity {
     private TextView txt_message;
     private TextView txt_player_bc;
     private TextView txt_player1_card_value;
-    private TextView txt_player2_card_value;
+    private TextView txt_mul_player1_card_value;
+    private TextView txt_mul_player2_card_value;
     private TextView txt_round;
     private Context mContext;
 
@@ -48,6 +57,7 @@ public class Black_Jack extends AppCompatActivity {
     int player1Bet;
     int player2Bet;
     int round;
+    List<String> cardName;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -60,6 +70,11 @@ public class Black_Jack extends AppCompatActivity {
         btn_bet = (Button) findViewById(R.id.btn_bet);
         btn_hit = (Button) findViewById(R.id.btn_hit);
         btn_stand = (Button) findViewById(R.id.btn_stand);
+        img_player1card_1 = (ImageView) findViewById(R.id.img_player1card_1);
+        img_player1card_2 = (ImageView) findViewById(R.id.img_player1card_2);
+        img_player1card_3 = (ImageView) findViewById(R.id.img_player1card_3);
+        img_player1card_4 = (ImageView) findViewById(R.id.img_player1card_4);
+        img_player1card_5 = (ImageView) findViewById(R.id.img_player1card_5);
         sb_bet = (SeekBar) findViewById(R.id.sb_bet);
         txt_bet = (TextView) findViewById(R.id.txt_bet);
         txt_bet_now = (TextView) findViewById(R.id.txt_bet_now);
@@ -67,14 +82,15 @@ public class Black_Jack extends AppCompatActivity {
         txt_dealer_card_value = (TextView) findViewById(R.id.txt_dealer_card_value);
         txt_player_bc = (TextView) findViewById(R.id.txt_player_bc);
         txt_player1_card_value = (TextView) findViewById(R.id.txt_player1_card_value);
-        txt_player2_card_value = (TextView) findViewById(R.id.txt_player2_card_value);
+        txt_mul_player1_card_value = (TextView) findViewById(R.id.txt_mul_player1_card_value);
+        txt_mul_player2_card_value = (TextView) findViewById(R.id.txt_mul_player2_card_value);
         txt_round = (TextView) findViewById(R.id.txt_round);
         mContext = Black_Jack.this;
 
         // Todo: Assign player into player number and change the number of player
         // player 1 is the first player and the player in solo mode
         thisPlayer = 1;
-        numOfPlayer = 2;
+        numOfPlayer = 1;
 
         // Default starting BattleCoins is 1000 bc
         Player1BattleCoins = 1000;
@@ -107,6 +123,11 @@ public class Black_Jack extends AppCompatActivity {
         btn_bet.setVisibility(View.VISIBLE);
         btn_hit.setVisibility(View.INVISIBLE);
         btn_stand.setVisibility(View.INVISIBLE);
+        img_player1card_1.setVisibility(View.INVISIBLE);
+        img_player1card_2.setVisibility(View.INVISIBLE);
+        img_player1card_3.setVisibility(View.INVISIBLE);
+        img_player1card_4.setVisibility(View.INVISIBLE);
+        img_player1card_5.setVisibility(View.INVISIBLE);
         switch (thisPlayer) {
             case 1:
                 txt_player_bc.setText("Player's Remaining BattleCoins: \n" + Player1BattleCoins + " bc");
@@ -121,7 +142,8 @@ public class Black_Jack extends AppCompatActivity {
         txt_bet.setVisibility(View.VISIBLE);
         txt_message.setVisibility(View.INVISIBLE);
         txt_player1_card_value.setVisibility(View.INVISIBLE);
-        txt_player2_card_value.setVisibility(View.INVISIBLE);
+        txt_mul_player1_card_value.setVisibility(View.INVISIBLE);
+        txt_mul_player2_card_value.setVisibility(View.INVISIBLE);
         txt_dealer_card_value.setVisibility(View.INVISIBLE);
     }
 
@@ -138,7 +160,7 @@ public class Black_Jack extends AppCompatActivity {
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //Toast.makeText(mContext, "Release SeekBar", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(mContext, "Release SeekBar", Toast.LENGTH_SHORT).show();
             }
         });
         btn_bet.setOnClickListener(bet);
@@ -206,7 +228,12 @@ public class Black_Jack extends AppCompatActivity {
         dealerDeck.draw(mainDeck);
         dealerDeck.draw(mainDeck);
         player1Deck.draw(mainDeck);
+        cardName = player1Deck.getAllCardName();
+        // Todo
+        img_player1card_1.setVisibility(View.VISIBLE);
         player1Deck.draw(mainDeck);
+        Toast.makeText(mContext, "CardNameList" + cardName, Toast.LENGTH_SHORT).show();
+
         if (numOfPlayer == 2) {
             player2Deck.draw(mainDeck);
             player2Deck.draw(mainDeck);
@@ -218,9 +245,12 @@ public class Black_Jack extends AppCompatActivity {
         txt_player1_card_value.setText(player1_value);
         txt_player1_card_value.setVisibility(View.VISIBLE);
         if (numOfPlayer == 2) {
+            txt_player1_card_value.setVisibility(View.INVISIBLE);
+            txt_mul_player1_card_value.setText(player1_value);
+            txt_mul_player1_card_value.setVisibility(View.VISIBLE);
             String player2_value = "" + player2Deck.cardsTotalValue();
-            txt_player2_card_value.setText(player2_value);
-            txt_player2_card_value.setVisibility(View.VISIBLE);
+            txt_mul_player2_card_value.setText(player2_value);
+            txt_mul_player2_card_value.setVisibility(View.VISIBLE);
         }
         if (thisPlayer == currentPlayer) {
             btn_hit.setVisibility(View.VISIBLE);
@@ -248,7 +278,16 @@ public class Black_Jack extends AppCompatActivity {
                 player1Deck.draw(mainDeck);
                 player_value = "" + player1Deck.cardsTotalValue();
                 txt_player1_card_value.setText(player_value);
+                if (numOfPlayer == 2) {
+                    txt_mul_player1_card_value.setText(player_value);
+                }
 
+                if (player1Deck.cardsTotalValue() <= 21 && player1Deck.numOfCards >= 5) {
+                    player1gameEnd = true;
+                    player1Finish = true;
+                    btn_hit.setVisibility(View.INVISIBLE);
+                    btn_stand.setVisibility(View.INVISIBLE);
+                }
                 if (player1Deck.cardsTotalValue() < 21) {
                     player1gameEnd = false;
                     player1Finish = false;
@@ -266,8 +305,14 @@ public class Black_Jack extends AppCompatActivity {
             case 2:
                 player2Deck.draw(mainDeck);
                 player_value = "" + player2Deck.cardsTotalValue();
-                txt_player2_card_value.setText(player_value);
+                txt_mul_player2_card_value.setText(player_value);
 
+                if (player2Deck.cardsTotalValue() < 21 && player2Deck.numOfCards >= 5) {
+                    player2gameEnd = true;
+                    player2Finish = true;
+                    btn_hit.setVisibility(View.INVISIBLE);
+                    btn_stand.setVisibility(View.INVISIBLE);
+                }
                 if (player2Deck.cardsTotalValue() < 21) {
                     player2gameEnd = false;
                     player2Finish = false;
@@ -346,7 +391,10 @@ public class Black_Jack extends AppCompatActivity {
         for (int i = 1; i <= numOfPlayer; i ++) {
             switch (i) {
                 case 1:
-                    if (player1Deck.cardsTotalValue() == 21 && player1Deck.numOfCards == 2) {
+                    if (player1Deck.cardsTotalValue() <= 21 && player1Deck.numOfCards >= 5) {
+                        txt_message.setText("Owned 5 cards and You win!\nYou gain " + player1Bet + " BattleCoins!");
+                        Player1BattleCoins = Player1BattleCoins + player1Bet*2;
+                    } else if (player1Deck.cardsTotalValue() == 21 && player1Deck.numOfCards == 2) {
                         txt_message.setText("Black Jack!\nYou gain 1.5*" + player1Bet + " BattleCoins!");
                         Player1BattleCoins = (int) (Player1BattleCoins + player1Bet*2.5);
                     } else if (player1Deck.cardsTotalValue() == dealerDeck.cardsTotalValue()
@@ -375,7 +423,10 @@ public class Black_Jack extends AppCompatActivity {
                     }
                     break;
                 case 2:
-                    if (player2Deck.cardsTotalValue() == 21 && player2Deck.numOfCards == 2) {
+                    if (player2Deck.cardsTotalValue() <= 21 && player2Deck.numOfCards >= 5) {
+                        txt_message.setText("Owned 5 cards and You win!\nYou gain " + player2Bet + " BattleCoins!");
+                        Player2BattleCoins = Player2BattleCoins + player2Bet*2;
+                    } else if (player2Deck.cardsTotalValue() == 21 && player2Deck.numOfCards == 2) {
                         txt_message.setText("Black Jack!\nYou gain 1.5*" + player2Bet + " BattleCoins!");
                         Player2BattleCoins = (int) (Player2BattleCoins + player2Bet*2.5);
                     } else if (player2Deck.cardsTotalValue() == dealerDeck.cardsTotalValue()
@@ -472,6 +523,10 @@ public class Black_Jack extends AppCompatActivity {
         }
     }
 
+    String cardName(String suit, String value) {
+        String cardName = "";
+        return cardName;
+    }
 
 
     //********************************************************************************************
