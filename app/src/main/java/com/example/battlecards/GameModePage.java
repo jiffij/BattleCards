@@ -81,7 +81,13 @@ public class GameModePage extends AppCompatActivity {
                         startActivity(intent2);
                         break;
                     case "AI":
-                        startActivity(new Intent(GameModePage.this, SpeedLauncher.class));
+                        if(game.equals("Speed")) {
+                            Intent intent3 = new Intent(GameModePage.this, SpeedLauncher.class);
+                            intent3.putExtra("mode", "ai");
+                            intent3.putExtra("player", "A");
+                            startActivity(intent3);
+                        }
+                        else if(game.equals("Black Jack"));//TODO
                         break;
                     default:
                         break;

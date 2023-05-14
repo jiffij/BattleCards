@@ -1,5 +1,7 @@
 package com.example.battlecards;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -12,8 +14,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 ;
 
+import org.lwjgl.Sys;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -31,7 +35,17 @@ public class SpeedUI extends ApplicationAdapter {
     int screenHeight;
     SpeedDeck speedDeck;
     SpeedEnemy speedEnemy;
+    String mode;//multi, ai
+    PLAYERS me;
+    String room;
+    Context context;
 
+    SpeedUI(String mode, String player, String room, Context context){
+        this.mode = mode;
+        me = player.equals("A")? PLAYERS.A: PLAYERS.B;
+        this.room = room;
+        this.context = context;
+    }
     @Override
     public void create () {
         screenWidth = Gdx.graphics.getWidth();
@@ -42,13 +56,21 @@ public class SpeedUI extends ApplicationAdapter {
         batch = new SpriteBatch();
 
         stage = new Stage();
-        speedDeck = new SpeedDeck(stage, screenWidth, screenHeight);
+        speedDeck = new SpeedDeck(stage, screenWidth, screenHeight, me);
         speedDeck.load();
         speedDeck.addActor("back");
         Gdx.input.setInputProcessor(stage);
         speedDeck.InitAnim();
-        speedEnemy = new SpeedAIEnemy(speedDeck);
-        speedEnemy.start();
+        if(this.mode.equals("ai")) {
+            speedEnemy = new SpeedAIEnemy(speedDeck);
+            speedEnemy.start();
+        }else{
+            if(me == PLAYERS.A) {
+                Realtime real = new Realtime(room);
+                real.write("BHand", speedDeck.speed.BHand.getAllCardName());
+                real.write("BDeck", speedDeck.speed.BDeck.getAllCardName());
+            }
+        }
     }
 
     @Override
@@ -59,10 +81,10 @@ public class SpeedUI extends ApplicationAdapter {
                 BACKGROUND_COLOR.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
-
         batch.begin();
         batch.end();
-        speedDeck.update();
+        if(speedDeck.update()) dispose();
+//        dispose();
         stage.act();
         stage.draw();
     }
@@ -70,8 +92,17 @@ public class SpeedUI extends ApplicationAdapter {
     @Override
     public void dispose () {
         speedDeck.dispose();
-        batch.dispose();
-        stage.dispose();
-
+        try {
+            batch.dispose();
+            stage.dispose();
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        System.out.println("dispose");
+        Gdx.app.exit();
+        Intent intent1 = new Intent(this.context, Result.class);
+        intent1.putExtra("result", this.speedDeck.speed.winner == PLAYERS.A? "win": "loss");
+        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent1);
     }
 }

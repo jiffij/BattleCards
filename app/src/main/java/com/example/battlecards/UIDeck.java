@@ -35,7 +35,7 @@ public abstract class UIDeck {
         this.screenHeight = screenHeight;
     }
     public abstract void InitAnim();
-    public abstract void update();
+    public abstract boolean update();
     public abstract void load();
 
     public abstract CardImage cardBack();
