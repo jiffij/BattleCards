@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
                             user.put("email", firebaseUser.getEmail());
                             user.put("Rank", "");
                             user.put("record", "");
+                            user.put("win", "0");
+                            user.put("loss", "0");
 
                             db.collection("users").document(firebaseUser.getUid())
                                     .set(user);

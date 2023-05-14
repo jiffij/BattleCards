@@ -14,12 +14,14 @@ public class WhiteTextAdapter extends ArrayAdapter<String> {
     private int textColor;
     private float textSize;
     private int itemPadding;
+    private int gravity;
 
     public WhiteTextAdapter(Context context, List<String> items) {
         super(context, android.R.layout.simple_list_item_1, items);
         textColor = Color.WHITE;
         textSize = 40;
         itemPadding = 20;
+        gravity = Gravity.CENTER;
     }
 
     @Override
@@ -27,7 +29,7 @@ public class WhiteTextAdapter extends ArrayAdapter<String> {
         TextView textView = (TextView) super.getView(position, convertView, parent);
         textView.setTextColor(textColor);
         textView.setTextSize(textSize);
-        textView.setGravity(Gravity.CENTER);
+        textView.setGravity(gravity);
         textView.setPadding(itemPadding, itemPadding, itemPadding, itemPadding);
         return textView;
     }
@@ -41,4 +43,5 @@ public class WhiteTextAdapter extends ArrayAdapter<String> {
     public void setItemPadding(int padding) {
         itemPadding = padding;
     }
+    public void setGravity(int grav){this.gravity = grav;}
 }

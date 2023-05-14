@@ -83,8 +83,8 @@ public class SpeedUI extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.end();
-        if(speedDeck.update()) dispose();
-//        dispose();
+//        if(speedDeck.update()) dispose();
+        dispose();
         stage.act();
         stage.draw();
     }

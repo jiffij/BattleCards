@@ -46,7 +46,7 @@ public class HomePage extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     GoogleSignInClient googleSignInClient;
     ListView scrollMenu;
-    String[] Games = {"Black Jack", "Speed", "Queen of Spades"};
+    String[] Games = {"Black Jack", "Speed", "Queen of Spades", "Rank"};
     Button test;
 
     @Override
@@ -79,6 +79,9 @@ public class HomePage extends AppCompatActivity {
                         Intent intent1 = new Intent(HomePage.this, Black_Jack.class);
                         intent1.putExtra("game", word);
                         startActivity(intent1);
+                        break;
+                    case "Rank":
+                        startActivity(new Intent(HomePage.this, Ranking.class));
                         break;
                     default:
                         Intent intent = new Intent(HomePage.this, GameModePage.class);
