@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.battlecards">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -15,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BattleCards"
         tools:targetApi="31">
+        <activity
+            android:name=".GPSearch"
+            android:exported="false" />
         <activity
             android:name=".Ranking"
             android:exported="false" />

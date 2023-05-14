@@ -40,7 +40,6 @@ public class Realtime {
 //
 //        });
 //    }
-
     void write(String path, int value){
         myRef.child(path).setValue(value, new DatabaseReference.CompletionListener() {
             @Override

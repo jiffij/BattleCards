@@ -18,7 +18,10 @@ public class SpeedDeck extends UIDeck {
 
     Speed speed;
     SpeedEnemy enemy;
-    public SpeedDeck(Stage stage, int screenWidth, int screenHeight, PLAYERS me) {
+    boolean online;
+    String room;
+    Realtime real;
+    public SpeedDeck(Stage stage, int screenWidth, int screenHeight, PLAYERS me, boolean online, String room) {
         super(stage, screenWidth, screenHeight);
         this.speed = (me == PLAYERS.A)? new SpeedA(): new SpeedB();
         List<String> lr = this.speed.pool();
@@ -30,6 +33,9 @@ public class SpeedDeck extends UIDeck {
         handStartX = screenWidth/2 - 2*(cardWidth+10);
         space = cardWidth + 10;
         enemy = new SpeedAIEnemy(this);
+        this.online = online;
+        this.room = room;
+        if(room != null) real = new Realtime(room);
     }
     public void load(){
         String cardSuitAlpha[] = {"s", "h", "c", "d"};
@@ -118,11 +124,17 @@ public class SpeedDeck extends UIDeck {
             left = lr.get(0);
             this.getCard(left).setPosition(leftPos, midYPos);
             this.addActor(this.getCard(left));
+            if(this.online){
+                real.write("left", lr.get(0));
+            }
         }
         if(!lr.get(1).equals(right)){
             right = lr.get(1);
             this.getCard(right).setPosition(rightPos, midYPos);
             this.addActor(this.getCard(right));
+            if(this.online){
+                real.write("right", lr.get(1));
+            }
         }
         removePoolCard();
         return false;

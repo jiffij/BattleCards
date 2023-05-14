@@ -89,6 +89,12 @@ public class GameModePage extends AppCompatActivity {
                         }
                         else if(game.equals("Black Jack"));//TODO
                         break;
+                    case "Nearby rooms":
+                        Intent intent4 = new Intent(GameModePage.this, GPSearch.class);
+                        intent4.putExtra("mode", "GPS");
+                        intent4.putExtra("player", "A");
+                        startActivity(intent4);
+                        break;
                     default:
                         break;
                 }

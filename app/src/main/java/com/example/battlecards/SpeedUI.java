@@ -56,7 +56,7 @@ public class SpeedUI extends ApplicationAdapter {
         batch = new SpriteBatch();
 
         stage = new Stage();
-        speedDeck = new SpeedDeck(stage, screenWidth, screenHeight, me);
+        speedDeck = new SpeedDeck(stage, screenWidth, screenHeight, me, this.mode.equals("ai")? false: true, room);
         speedDeck.load();
         speedDeck.addActor("back");
         Gdx.input.setInputProcessor(stage);
@@ -69,6 +69,11 @@ public class SpeedUI extends ApplicationAdapter {
                 Realtime real = new Realtime(room);
                 real.write("BHand", speedDeck.speed.BHand.getAllCardName());
                 real.write("BDeck", speedDeck.speed.BDeck.getAllCardName());
+                List<String> lr = this.speedDeck.speed.pool();
+                real.write("left", lr.get(0));
+                real.write("right", lr.get(1));
+            }else{//TODO player B
+
             }
         }
     }
@@ -83,8 +88,8 @@ public class SpeedUI extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.end();
-//        if(speedDeck.update()) dispose();
-        dispose();
+        if(speedDeck.update()) dispose();
+//        dispose();
         stage.act();
         stage.draw();
     }
