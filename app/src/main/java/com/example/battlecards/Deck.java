@@ -132,13 +132,13 @@ public class Deck {
                     cardsTotalValue +=10; break;
                 case "A": aces +=1; break;
             }
-            for (int i=0; i< aces; i++){
-                if (cardsTotalValue>10){
-                    cardsTotalValue +=1;
-                }
-                else{
-                    cardsTotalValue +=11;
-                }
+        }
+        for (int i=0; i< aces; i++){
+            if (cardsTotalValue>10){
+                cardsTotalValue +=1;
+            }
+            else{
+                cardsTotalValue +=11;
             }
         }
         return cardsTotalValue;

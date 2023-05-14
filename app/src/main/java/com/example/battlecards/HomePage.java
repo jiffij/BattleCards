@@ -46,7 +46,7 @@ public class HomePage extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     GoogleSignInClient googleSignInClient;
     ListView scrollMenu;
-    String[] Games = {"Black Jack", "Speed", "Queen of Spades"};
+    String[] Games = {"Black Jack", "Speed", "Queen of Spades", "Rank"};
     Button test;
 
     @Override
@@ -73,8 +73,11 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String word = (String) parent.getItemAtPosition(position);
-                // Toast.makeText(HomePage.this, "You clicked on " + word, Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomePage.this, "You clicked on " + word, Toast.LENGTH_SHORT).show();
                 switch(word) {
+                    case "Rank":
+                        startActivity(new Intent(HomePage.this, Ranking.class));
+                        break;
                     default:
                         Intent intent = new Intent(HomePage.this, GameModePage.class);
                         intent.putExtra("game", word);

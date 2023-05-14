@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class JoinRoom extends AppCompatActivity {
@@ -31,7 +33,9 @@ public class JoinRoom extends AppCompatActivity {
             public void onClick(View v) {
                 String text = RoomInput.getText().toString().trim();
                 Realtime real = new Realtime(text);
-
+                List list = new ArrayList();
+                list.add("");
+                real.write("B", list);
                 real.addListener((snapshot)->{
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
                     Long val = (Long) map.get("players");
@@ -42,6 +46,7 @@ public class JoinRoom extends AppCompatActivity {
                     }
                     ++num_player;
                     real.write("players", num_player);
+
                 });
 
             }

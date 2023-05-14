@@ -2,6 +2,7 @@ package com.example.battlecards;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -52,6 +53,8 @@ public class OpenRoom extends AppCompatActivity {
             getSupportActionBar().hide();
         }
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        Intent intent = getIntent();
+        String game = intent.getStringExtra("game");
 
         roomid = findViewById(R.id.roomId);
         loading = findViewById(R.id.progressBar);
@@ -70,12 +73,28 @@ public class OpenRoom extends AppCompatActivity {
         real.write("players", 1);
         List list = new ArrayList();
         list.add("");
-        real.write(firebaseAuth.getCurrentUser().getUid(), list);
+        real.write("A", list);
+        real.write("game", game);
         real.addListener((snapshot)->{
             Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
             Long val = (Long) map.get("players");
             if(val.intValue() == 2){
                 System.out.println("start game");
+                if(game.equals("Speed")) {
+                    Intent intent1 = new Intent(OpenRoom.this, SpeedLauncher.class);
+                    intent1.putExtra("mode", "multi");
+                    intent1.putExtra("player", "A");
+                    intent1.putExtra("room", Integer.toString(id));
+                    startActivity(intent1);
+                }
+                else if(game.equals("Black Jack")) {
+                    Intent intent1 = new Intent(OpenRoom.this, Black_Jack.class);
+                    intent1.putExtra("mode", "multi");
+                    intent1.putExtra("player", "1");
+                    intent1.putExtra("numOfPlayer", "2");
+                    intent1.putExtra("room", Integer.toString(id));
+                    startActivity(intent1);
+                }
             }
         });
     }

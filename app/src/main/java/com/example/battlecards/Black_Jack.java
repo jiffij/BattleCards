@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -20,6 +22,11 @@ public class Black_Jack extends AppCompatActivity {
     private Button btn_bet;
     private Button btn_hit;
     private Button btn_stand;
+    private ImageView img_dealer_card_1;
+    private ImageView img_dealer_card_2;
+    private ImageView img_dealer_card_3;
+    private ImageView img_dealer_card_4;
+    private ImageView img_dealer_card_5;
     private ImageView img_player1card_1;
     private ImageView img_player1card_2;
     private ImageView img_player1card_3;
@@ -37,7 +44,6 @@ public class Black_Jack extends AppCompatActivity {
     private TextView txt_round;
     private Context mContext;
 
-
     // For the game
     Deck mainDeck;
     Deck player1Deck;
@@ -46,11 +52,11 @@ public class Black_Jack extends AppCompatActivity {
     boolean gameEnd;
     boolean player1gameEnd;
     boolean player2gameEnd;
+    boolean player1Finish;
+    boolean player2Finish;
     Handler handler = new Handler();
     int currentPlayer;
     int thisPlayer;
-    boolean player1Finish;
-    boolean player2Finish;
     int numOfPlayer;
     int Player1BattleCoins;
     int Player2BattleCoins;
@@ -58,6 +64,12 @@ public class Black_Jack extends AppCompatActivity {
     int player2Bet;
     int round;
     List<String> cardName;
+
+    // For multiplayer
+    Realtime real;
+    //Intent intent = getIntent();
+    String mode;
+    String room;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -70,6 +82,11 @@ public class Black_Jack extends AppCompatActivity {
         btn_bet = (Button) findViewById(R.id.btn_bet);
         btn_hit = (Button) findViewById(R.id.btn_hit);
         btn_stand = (Button) findViewById(R.id.btn_stand);
+        img_dealer_card_1 = (ImageView) findViewById(R.id.img_dealer_card_1);
+        img_dealer_card_2 = (ImageView) findViewById(R.id.img_dealer_card_2);
+        img_dealer_card_3 = (ImageView) findViewById(R.id.img_dealer_card_3);
+        img_dealer_card_4 = (ImageView) findViewById(R.id.img_dealer_card_4);
+        img_dealer_card_5 = (ImageView) findViewById(R.id.img_dealer_card_5);
         img_player1card_1 = (ImageView) findViewById(R.id.img_player1card_1);
         img_player1card_2 = (ImageView) findViewById(R.id.img_player1card_2);
         img_player1card_3 = (ImageView) findViewById(R.id.img_player1card_3);
@@ -88,9 +105,16 @@ public class Black_Jack extends AppCompatActivity {
         mContext = Black_Jack.this;
 
         // Todo: Assign player into player number and change the number of player
-        // player 1 is the first player and the player in solo mode
-        thisPlayer = 1;
-        numOfPlayer = 1;
+        // player 1 is the first player and the player in solo mode as well
+        Intent intent = getIntent();
+        thisPlayer = Integer.parseInt(intent.getStringExtra("player"));
+        numOfPlayer = Integer.parseInt(intent.getStringExtra("numOfPlayer"));
+        mode = intent.getStringExtra("mode");
+        //room = mode.equals("multi")? intent.getStringExtra("room"): null;
+        room = "999";
+        //real = new Realtime(room);
+        //thisPlayer = 1;
+        //numOfPlayer = 1;
 
         // Default starting BattleCoins is 1000 bc
         Player1BattleCoins = 1000;
@@ -123,6 +147,11 @@ public class Black_Jack extends AppCompatActivity {
         btn_bet.setVisibility(View.VISIBLE);
         btn_hit.setVisibility(View.INVISIBLE);
         btn_stand.setVisibility(View.INVISIBLE);
+        img_dealer_card_1.setVisibility(View.INVISIBLE);
+        img_dealer_card_2.setVisibility(View.INVISIBLE);
+        img_dealer_card_3.setVisibility(View.INVISIBLE);
+        img_dealer_card_4.setVisibility(View.INVISIBLE);
+        img_dealer_card_5.setVisibility(View.INVISIBLE);
         img_player1card_1.setVisibility(View.INVISIBLE);
         img_player1card_2.setVisibility(View.INVISIBLE);
         img_player1card_3.setVisibility(View.INVISIBLE);
@@ -187,7 +216,10 @@ public class Black_Jack extends AppCompatActivity {
                         btn_bet.setVisibility(View.INVISIBLE);
                         txt_bet.setVisibility(View.INVISIBLE);
                         sb_bet.setVisibility(View.INVISIBLE);
-                        startRound();
+                        if (numOfPlayer == 2) {
+                            currentPlayer = 2;
+                            thisPlayer = 2;
+                        } else startRound();
                     }
                     else {
                         txt_message.setText("You cannot bet 0 BattleCoins!");
@@ -211,7 +243,7 @@ public class Black_Jack extends AppCompatActivity {
                         btn_bet.setVisibility(View.INVISIBLE);
                         txt_bet.setVisibility(View.INVISIBLE);
                         sb_bet.setVisibility(View.INVISIBLE);
-                        // startRound(1);
+                        startRound();
                     }
                     else {
                         txt_message.setText("You cannot bet 0 BattleCoins!");
@@ -228,12 +260,15 @@ public class Black_Jack extends AppCompatActivity {
         dealerDeck.draw(mainDeck);
         dealerDeck.draw(mainDeck);
         player1Deck.draw(mainDeck);
-        cardName = player1Deck.getAllCardName();
-        // Todo
-        img_player1card_1.setVisibility(View.VISIBLE);
         player1Deck.draw(mainDeck);
-        Toast.makeText(mContext, "CardNameList" + cardName, Toast.LENGTH_SHORT).show();
-
+        img_dealer_card_1.setImageDrawable(getCardImage(dealerDeck, 0));
+        img_dealer_card_1.setVisibility(View.VISIBLE);
+        if (numOfPlayer == 1 && thisPlayer == 1) {
+            img_player1card_1.setImageDrawable(getCardImage(player1Deck, 0));
+            img_player1card_2.setImageDrawable(getCardImage(player1Deck, 1));
+            img_player1card_1.setVisibility(View.VISIBLE);
+            img_player1card_2.setVisibility(View.VISIBLE);
+        }
         if (numOfPlayer == 2) {
             player2Deck.draw(mainDeck);
             player2Deck.draw(mainDeck);
@@ -242,10 +277,11 @@ public class Black_Jack extends AppCompatActivity {
         txt_dealer_card_value.setText(dealer_value);
         txt_dealer_card_value.setVisibility(View.VISIBLE);
         String player1_value = "" + player1Deck.cardsTotalValue();
-        txt_player1_card_value.setText(player1_value);
-        txt_player1_card_value.setVisibility(View.VISIBLE);
+        if (numOfPlayer == 1) {
+            txt_player1_card_value.setText(player1_value);
+            txt_player1_card_value.setVisibility(View.VISIBLE);
+        }
         if (numOfPlayer == 2) {
-            txt_player1_card_value.setVisibility(View.INVISIBLE);
             txt_mul_player1_card_value.setText(player1_value);
             txt_mul_player1_card_value.setVisibility(View.VISIBLE);
             String player2_value = "" + player2Deck.cardsTotalValue();
@@ -261,12 +297,14 @@ public class Black_Jack extends AppCompatActivity {
             @Override public void onClick(View v) {
                 hit(currentPlayer);
                 check();
+                //multiPlayerCheck();
             }
         });
         btn_stand.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 stand(currentPlayer);
                 check();
+                //multiPlayerCheck();
             }
         });
     }
@@ -278,17 +316,32 @@ public class Black_Jack extends AppCompatActivity {
                 player1Deck.draw(mainDeck);
                 player_value = "" + player1Deck.cardsTotalValue();
                 txt_player1_card_value.setText(player_value);
-                if (numOfPlayer == 2) {
+                if (numOfPlayer == 1) {
+                    switch (player1Deck.numOfCards) {
+                        case 3:
+                            img_player1card_3.setImageDrawable(getCardImage(player1Deck, 2));
+                            img_player1card_3.setVisibility(View.VISIBLE);
+                            break;
+                        case 4:
+                            img_player1card_4.setImageDrawable(getCardImage(player1Deck, 3));
+                            img_player1card_4.setVisibility(View.VISIBLE);
+                            break;
+                        case 5:
+                            img_player1card_5.setImageDrawable(getCardImage(player1Deck, 4));
+                            img_player1card_5.setVisibility(View.VISIBLE);
+                            break;
+                        default:
+                            break;
+                    }
+                } else if (numOfPlayer == 2) {
                     txt_mul_player1_card_value.setText(player_value);
                 }
-
                 if (player1Deck.cardsTotalValue() <= 21 && player1Deck.numOfCards >= 5) {
                     player1gameEnd = true;
                     player1Finish = true;
                     btn_hit.setVisibility(View.INVISIBLE);
                     btn_stand.setVisibility(View.INVISIBLE);
-                }
-                if (player1Deck.cardsTotalValue() < 21) {
+                } else if (player1Deck.cardsTotalValue() < 21) {
                     player1gameEnd = false;
                     player1Finish = false;
                 } else if (player1Deck.cardsTotalValue() > 21) {
@@ -352,7 +405,6 @@ public class Black_Jack extends AppCompatActivity {
                     update();
                 }
                 else if (player1Finish && player1gameEnd) {
-                    // If gameEnd = true means all player has exceed 21
                     update();
                 }
                 break;
@@ -364,6 +416,7 @@ public class Black_Jack extends AppCompatActivity {
                 if (player1Finish) {
                     // player 2 turn
                     currentPlayer += 1;
+                    thisPlayer = currentPlayer;
                 }
                 if (player1Finish && player2Finish && !gameEnd) {
                     computerTurn();
@@ -379,8 +432,28 @@ public class Black_Jack extends AppCompatActivity {
     }
 
     void computerTurn() {
+        img_dealer_card_2.setImageDrawable(getCardImage(dealerDeck, 1));
+        img_dealer_card_2.setVisibility(View.VISIBLE);
         while (dealerDeck.cardsTotalValue() < 17) {
             dealerDeck.draw(mainDeck);
+            //handler.postDelayed(() -> {dealerDeck.draw(mainDeck)}, 1000);
+            switch (dealerDeck.numOfCards) {
+                case 3:
+                    img_dealer_card_3.setImageDrawable(getCardImage(dealerDeck, 2));
+                    img_dealer_card_3.setVisibility(View.VISIBLE);
+                    break;
+                case 4:
+                    img_dealer_card_4.setImageDrawable(getCardImage(dealerDeck, 3));
+                    img_dealer_card_4.setVisibility(View.VISIBLE);
+                    break;
+                case 5:
+                    img_dealer_card_5.setImageDrawable(getCardImage(dealerDeck, 4));
+                    img_dealer_card_5.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    break;
+            }
+
             String dealer_value = "" + dealerDeck.cardsTotalValue();
             txt_dealer_card_value.setText(dealer_value);
         }
@@ -473,14 +546,17 @@ public class Black_Jack extends AppCompatActivity {
                 } else if (Player1BattleCoins >= 2500) {
                     txt_message.setText("Congratulations! You have win the game by exceeding 2500 BattleCoins!");
                     txt_message.setVisibility(View.VISIBLE);
+                    //updateRealtimeServer();
                     // Todo: Navigate to result page
                 } else if (Player1BattleCoins == 0) {
                     txt_message.setText("Oops! You have lose the game by losing all BattleCoins!");
                     txt_message.setVisibility(View.VISIBLE);
+                    //updateRealtimeServer();
                     // Todo: Navigate to result page
                 } else {
                     txt_message.setText("Oops! You have lose the game by unable to reach 2500 BattleCoins in 5 rounds!");
                     txt_message.setVisibility(View.VISIBLE);
+                    //updateRealtimeServer();
                     // Todo: Navigate to result page
                 }
                 break;
@@ -522,137 +598,29 @@ public class Black_Jack extends AppCompatActivity {
             default:
         }
     }
-
-    String cardName(String suit, String value) {
-        String cardName = "";
-        return cardName;
+    Drawable getCardImage(Deck deck, int idx) {
+        cardName = deck.getAllCardName();
+        String uri = "@drawable/"+ cardName.get(idx);  // where my resource (without the extension) is the file
+        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        Drawable res = getResources().getDrawable(imageResource);
+        return res;
     }
 
-
-    //********************************************************************************************
-    static void nextAction(Deck mainDeck, Deck playerDeck, Deck dealerDeck) {
-        boolean gameEnd = false;
-        boolean playerFinish = false;
-        boolean playAgain = true;
-        int PlayerBattleCoins = 1000;
-        int playerBet=0;
-
-        while (playAgain) {
-            //Scanner userInput = new Scanner(System.in);
-            Boolean check1= false;
-
-            dealerDeck.draw(mainDeck);
-            dealerDeck.draw(mainDeck);
-            System.out.println(" ");
-            System.out.print("Dealer Cards: "+ dealerDeck.toString2());
-
-            playerDeck.draw(mainDeck);
-            playerDeck.draw(mainDeck);
-            System.out.println(" ");
-            System.out.print("Player Cards: "+ playerDeck.toString() + " Total: "+
-                    playerDeck.cardsTotalValue());
-
-            while (!gameEnd && !playerFinish) {
-                System.out.println(" ");
-                System.out.print("Would you like to Hit(1) or Stand(2)?");
-                int playerAction = 0;//userInput.nextInt();
-
-                if (playerAction == 1) {
-                    playerDeck.draw(mainDeck);
-                    System.out.println(" ");
-                    System.out.print("Player Cards: " + playerDeck.toString() + " Total: " +
-                            playerDeck.cardsTotalValue());
-
-                    if (playerDeck.cardsTotalValue() < 21) {
-                        gameEnd = false;
-                        playerFinish = false;
-                    } else if (playerDeck.cardsTotalValue() > 21) {
-                        System.out.println(" ");
-                        System.out.println("Bust! Game End!!");
-                        gameEnd = true;
-                        playerFinish = true;
-                    } else {
-                        playerFinish = true;
-                    }
-                } else if (playerAction == 2) {
-                    playerFinish = true;
-                } else {
-                    System.out.print("Select Hit(1) or Stand(2) only!");
-                    gameEnd = false;
-                    playerFinish = false;
-                }
-            }
-
-            while (dealerDeck.cardsTotalValue() < 17) {
-                dealerDeck.draw(mainDeck);
-            }
-            System.out.println(" ");
-            System.out.print("Dealer Cards: " + dealerDeck.toString() + " Total: " +
-                    dealerDeck.cardsTotalValue());
-            gameEnd = true;
-
-            if (playerDeck.cardsTotalValue() == dealerDeck.cardsTotalValue()
-                    && playerDeck.cardsTotalValue() <= 21) {
-                System.out.println(" ");
-                System.out.println("Draw!");
-            } else if (playerDeck.cardsTotalValue() <= 21 && dealerDeck.cardsTotalValue() <= 21
-                    && (playerDeck.cardsTotalValue() > dealerDeck.cardsTotalValue())) {
-                System.out.println(" ");
-                System.out.println("You Win!");
-                PlayerBattleCoins=PlayerBattleCoins+playerBet;
-            } else if (playerDeck.cardsTotalValue() <= 21 && dealerDeck.cardsTotalValue() <= 21
-                    && (playerDeck.cardsTotalValue() < dealerDeck.cardsTotalValue())) {
-                System.out.println(" ");
-                System.out.println("You Lose!");
-                PlayerBattleCoins=PlayerBattleCoins-playerBet;
-            } else if (playerDeck.cardsTotalValue() <= 21 && dealerDeck.cardsTotalValue() > 21) {
-                System.out.println(" ");
-                System.out.println("You Win!");
-                PlayerBattleCoins=PlayerBattleCoins+playerBet;
-            } else if (playerDeck.cardsTotalValue() > 21 && dealerDeck.cardsTotalValue() <= 21) {
-                System.out.println(" ");
-                System.out.println("Bust and Lose!");
-                PlayerBattleCoins=PlayerBattleCoins-playerBet;
-            } else if (playerDeck.cardsTotalValue() > 21 && dealerDeck.cardsTotalValue() > 21) {
-                System.out.println(" ");
-                System.out.println("Bust and Draw!");
-            }
-
-            System.out.println(" ");
-            System.out.println("Your money:$" + PlayerBattleCoins);
-
-            if (PlayerBattleCoins>0) {
-                Boolean inputComplete2 = false;
-                while (!inputComplete2) {
-                    System.out.println(" ");
-                    System.out.print("Play again? Yes(1) or No(2):");
-                    int playerAction = 0;//userInput.nextInt();
-
-                    if (playerAction == 1) {
-                        playAgain = true;
-                        gameEnd = false;
-                        playerFinish = false;
-                        inputComplete2 = true;
-
-                    } else if (playerAction == 2) {
-                        playAgain = false;
-                        System.out.println(" ");
-                        System.out.println("Game End!");
-                        inputComplete2 = true;
-
-                    } else {
-                        System.out.println(" ");
-                        System.out.println("Please select Yes(1) or No(2) only!");
-                        inputComplete2 = false;
-                    }
-                }
-                playerDeck.returnAllCards(mainDeck);
-                dealerDeck.returnAllCards(mainDeck);
-            } else{
-                playAgain = false;
-                System.out.println(" ");
-                System.out.println("No money! Game Over!");
-            }
+    void multiPlayerCheck() {
+        if (thisPlayer == currentPlayer) {
+            btn_hit.setVisibility(View.VISIBLE);
+            btn_stand.setVisibility(View.VISIBLE);
         }
     }
+
+    void updateRealtimeServer() {
+        real.write("A", 12);
+//        real.write("player1Bet", player1Bet);
+//        real.write("numOfPlayer", numOfPlayer);
+//        real.write("currentPlayer", currentPlayer);
+//        real.write("Player1BattleCoins", Player1BattleCoins);
+//        real.write("round", round);
+    }
+
+    //********************************************************************************************
 }

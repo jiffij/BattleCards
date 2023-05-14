@@ -3,4 +3,5 @@
     <string name="login_success">You have successfully login!</string>
     <string name="login">Google Login</string>
     <string name="RoomWaitMessage">Waiting others to join...</string>
+    <string name="Back">Back To Menu</string>
 </resources>

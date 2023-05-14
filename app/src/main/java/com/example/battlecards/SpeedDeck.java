@@ -1,5 +1,7 @@
 package com.example.battlecards;
 
+import android.content.Intent;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,9 +18,9 @@ public class SpeedDeck extends UIDeck {
 
     Speed speed;
     SpeedEnemy enemy;
-    public SpeedDeck(Stage stage, int screenWidth, int screenHeight) {
+    public SpeedDeck(Stage stage, int screenWidth, int screenHeight, PLAYERS me) {
         super(stage, screenWidth, screenHeight);
-        this.speed = new Speed();
+        this.speed = (me == PLAYERS.A)? new SpeedA(): new SpeedB();
         List<String> lr = this.speed.pool();
         left = lr.get(0);
         right = lr.get(1);
@@ -107,14 +109,12 @@ public class SpeedDeck extends UIDeck {
         this.removeActor(this.speed.rightPool.getAllCardName().subList(1,this.speed.rightPool.length()));
     }
 
-    public void update(){
+    public boolean update(){
         if(speed.gameLoop()){
-            System.out.println("win");
-            return;
+            return true;
         }
         List<String> lr = this.speed.pool();
         if(!lr.get(0).equals(left)){
-            System.out.println("add to left pool");
             left = lr.get(0);
             this.getCard(left).setPosition(leftPos, midYPos);
             this.addActor(this.getCard(left));
@@ -125,6 +125,7 @@ public class SpeedDeck extends UIDeck {
             this.addActor(this.getCard(right));
         }
         removePoolCard();
+        return false;
     }
 
 }
