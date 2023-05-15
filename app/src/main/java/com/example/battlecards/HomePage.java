@@ -47,7 +47,7 @@ public class HomePage extends AppCompatActivity {
     GoogleSignInClient googleSignInClient;
     ListView scrollMenu;
     String[] Games = {"Black Jack", "Speed", "Queen of Spades", "Rank"};
-    Button test;
+//    Button test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class HomePage extends AppCompatActivity {
         tvName = findViewById(R.id.tv_name);
         btLogout = findViewById(R.id.bt_logout);
         scrollMenu = findViewById(R.id.list);
-        test = findViewById(R.id.button3);
+//        test = findViewById(R.id.button3);
 
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Games);
         WhiteTextAdapter adapter = new WhiteTextAdapter(this, Arrays.asList(Games));
@@ -132,13 +132,13 @@ public class HomePage extends AppCompatActivity {
         });
 
         //testing write to firebase realtime database
-        test.setOnClickListener(view->{
-
-            String[] cards = {"ca", "da", ""};
-            Realtime real = new Realtime("1");
-            real.write("2", Arrays.asList(cards));
-
-        });
+//        test.setOnClickListener(view->{
+//
+//            String[] cards = {"ca", "da", ""};
+//            Realtime real = new Realtime("1");
+//            real.write("2", Arrays.asList(cards));
+//
+//        });
 
     }
 }

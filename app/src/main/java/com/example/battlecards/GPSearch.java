@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationRequest;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ public class GPSearch extends AppCompatActivity implements LocationListener {
     String provider;
     protected String latitude, longitude;
     protected boolean gps_enabled, network_enabled;
+    GPS gps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,8 @@ public class GPSearch extends AppCompatActivity implements LocationListener {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+        Intent intent = getIntent();
+        String game = intent.getStringExtra("game");
         latitude_tv = findViewById(R.id.latitudeTV);
         longitude_tv = findViewById(R.id.longitudeTV);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -46,13 +51,21 @@ public class GPSearch extends AppCompatActivity implements LocationListener {
         }
         System.out.println("after permission check");
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        latitude_tv.setText("Latitude: " + loc.getLatitude());
+        longitude_tv.setText("Longitude: " + loc.getLongitude());
+        gps = new GPS(game, getApplicationContext());
+        gps.start();
+        gps.update(loc.getLatitude(), loc.getLongitude());
     }
+
     @Override
     public void onLocationChanged(Location location) {
 //        txtLat = (TextView) findViewById(R.id.textview1);
 //        txtLat.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
         latitude_tv.setText("Latitude: " + location.getLatitude());
         longitude_tv.setText("Longitude: " + location.getLongitude());
+        this.gps.update(location.getLatitude(), location.getLongitude());
     }
 
     @Override
@@ -68,5 +81,11 @@ public class GPSearch extends AppCompatActivity implements LocationListener {
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Log.d("Latitude","status");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.gps.end();
     }
 }
