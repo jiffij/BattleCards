@@ -13,8 +13,10 @@ import org.lwjgl.Sys;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SpeedDeck extends UIDeck {
 
@@ -157,8 +159,15 @@ public class SpeedDeck extends UIDeck {
     }
 
     private void removePoolCard(){
-        this.removeActor(this.speed.leftPool.getAllCardName().subList(1,this.speed.leftPool.length()));
-        this.removeActor(this.speed.rightPool.getAllCardName().subList(1,this.speed.rightPool.length()));
+        Set<String> leftPoolWithoutDup = new LinkedHashSet<>(this.speed.leftPool.getAllCardName());
+        Set<String> rightPoolWithoutDup = new LinkedHashSet<>(this.speed.rightPool.getAllCardName());
+        List<String> leftPoolListWithoutDup = new ArrayList<>(leftPoolWithoutDup);
+        List<String> rightPoolListWithoutDup = new ArrayList<>(rightPoolWithoutDup);
+        List<String> lr = this.speed.pool();
+        leftPoolListWithoutDup.remove(lr.get(0));
+        rightPoolListWithoutDup.remove(lr.get(1));
+        this.removeActor(leftPoolListWithoutDup);
+        this.removeActor(rightPoolListWithoutDup);
     }
 
     public boolean update(){
@@ -187,6 +196,12 @@ public class SpeedDeck extends UIDeck {
         }
         removePoolCard();
         return false;
+    }
+
+    @Override
+    public void dispose(){
+        super.dispose();
+        real.removeListener();
     }
 
 }

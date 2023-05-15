@@ -115,10 +115,11 @@ public class SpeedUI extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.end();
         if(ready) {
             if (speedDeck.update()) dispose();
         }
+        batch.end();
+
 //        dispose();
         stage.act();
         stage.draw();

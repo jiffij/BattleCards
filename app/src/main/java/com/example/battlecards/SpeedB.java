@@ -87,7 +87,7 @@ public class SpeedB extends Speed {
     public boolean gameLoop(){
 //        PLAYERS winner = PLAYERS.NONE;
 //        while(GameContinue){
-        flipNewCard();
+//        flipNewCard();
         if(winner == PLAYERS.NONE) winner = checkWin();
         else return true;
         return false;
