@@ -61,6 +61,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SpeedLauncher" />
+        <service android:name=".BackgroundSoundService" />
     </application>
 
 </manifest>

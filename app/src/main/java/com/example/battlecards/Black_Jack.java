@@ -23,6 +23,7 @@ public class Black_Jack extends AppCompatActivity {
     private Button btn_bet;
     private Button btn_hit;
     private Button btn_stand;
+    private Button btn_start;
     private ImageView img_dealer_card_1;
     private ImageView img_dealer_card_2;
     private ImageView img_dealer_card_3;
@@ -45,6 +46,7 @@ public class Black_Jack extends AppCompatActivity {
     private TextView txt_mul_player1_card_value;
     private TextView txt_mul_player2_card_value;
     private TextView txt_round;
+    private TextView txt_instruction;
     private Context mContext;
 
     // For the game
@@ -73,6 +75,9 @@ public class Black_Jack extends AppCompatActivity {
     String mode;
     String room;
 
+    // For sound effect
+    private SoundPlayer sound;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +86,13 @@ public class Black_Jack extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
+        // For music
+        sound = new SoundPlayer(this);
         btn_bet = (Button) findViewById(R.id.btn_bet);
         btn_hit = (Button) findViewById(R.id.btn_hit);
         btn_stand = (Button) findViewById(R.id.btn_stand);
+        btn_start = (Button) findViewById(R.id.btn_start);
         img_dealer_card_1 = (ImageView) findViewById(R.id.img_dealer_card_1);
         img_dealer_card_2 = (ImageView) findViewById(R.id.img_dealer_card_2);
         img_dealer_card_3 = (ImageView) findViewById(R.id.img_dealer_card_3);
@@ -106,6 +115,7 @@ public class Black_Jack extends AppCompatActivity {
         txt_mul_player1_card_value = (TextView) findViewById(R.id.txt_mul_player1_card_value);
         txt_mul_player2_card_value = (TextView) findViewById(R.id.txt_mul_player2_card_value);
         txt_round = (TextView) findViewById(R.id.txt_round);
+        txt_instruction = (TextView) findViewById(R.id.txt_instruction);
         mContext = Black_Jack.this;
 
         // Todo: Assign player into player number and change the number of player
@@ -129,7 +139,6 @@ public class Black_Jack extends AppCompatActivity {
         round = 0;
         bindViews();
 
-        initState();
 
         mainDeck = new Deck();
         mainDeck.addAllCards();
@@ -139,6 +148,8 @@ public class Black_Jack extends AppCompatActivity {
         player1Deck = new Deck();
         player2Deck = new Deck();
         dealerDeck = new Deck();
+
+        instruction();
     }
 
     private void initState() {
@@ -487,9 +498,11 @@ public class Black_Jack extends AppCompatActivity {
                     if (player1Deck.cardsTotalValue() <= 21 && player1Deck.numOfCards >= 5) {
                         txt_message.setText("Owned 5 cards and You win!\nYou gain " + player1Bet + " BattleCoins!");
                         Player1BattleCoins = Player1BattleCoins + player1Bet*2;
+                        sound.playCoinSound();
                     } else if (player1Deck.cardsTotalValue() == 21 && player1Deck.numOfCards == 2) {
                         txt_message.setText("Black Jack!\nYou gain 1.5*" + player1Bet + " BattleCoins!");
                         Player1BattleCoins = (int) (Player1BattleCoins + player1Bet*2.5);
+                        sound.playCoinSound();
                     } else if (player1Deck.cardsTotalValue() == dealerDeck.cardsTotalValue()
                             && player1Deck.cardsTotalValue() <= 21) {
                         txt_message.setText("Draw!\nYou didn't gain or lose any BattleCoins");
@@ -498,6 +511,7 @@ public class Black_Jack extends AppCompatActivity {
                             && (player1Deck.cardsTotalValue() > dealerDeck.cardsTotalValue())) {
                         txt_message.setText("You Win!\nYou gain " + player1Bet + " BattleCoins!");
                         Player1BattleCoins = Player1BattleCoins + player1Bet*2;
+                        sound.playCoinSound();
                     } else if (player1Deck.cardsTotalValue() <= 21 && dealerDeck.cardsTotalValue() <= 21
                             && (player1Deck.cardsTotalValue() < dealerDeck.cardsTotalValue())) {
                         txt_message.setText("You Lose!\nYou loss " + player1Bet + " BattleCoins!");
@@ -505,6 +519,7 @@ public class Black_Jack extends AppCompatActivity {
                     } else if (player1Deck.cardsTotalValue() <= 21 && dealerDeck.cardsTotalValue() > 21) {
                         txt_message.setText("Dealer Bust and You Win!\nYou gain " + player1Bet + " BattleCoins!");
                         Player1BattleCoins = Player1BattleCoins + player1Bet*2;
+                        sound.playCoinSound();
                     } else if (player1Deck.cardsTotalValue() > 21 && dealerDeck.cardsTotalValue() <= 21) {
                         txt_message.setText("You Bust and You Lose!\nYou loss " + player1Bet + " BattleCoins!");
                         //PlayerBattleCoins = PlayerBattleCoins - playerBet;
@@ -519,9 +534,11 @@ public class Black_Jack extends AppCompatActivity {
                     if (player2Deck.cardsTotalValue() <= 21 && player2Deck.numOfCards >= 5) {
                         txt_message.setText("Owned 5 cards and You win!\nYou gain " + player2Bet + " BattleCoins!");
                         Player2BattleCoins = Player2BattleCoins + player2Bet*2;
+                        sound.playCoinSound();
                     } else if (player2Deck.cardsTotalValue() == 21 && player2Deck.numOfCards == 2) {
                         txt_message.setText("Black Jack!\nYou gain 1.5*" + player2Bet + " BattleCoins!");
                         Player2BattleCoins = (int) (Player2BattleCoins + player2Bet*2.5);
+                        sound.playCoinSound();
                     } else if (player2Deck.cardsTotalValue() == dealerDeck.cardsTotalValue()
                             && player2Deck.cardsTotalValue() <= 21) {
                         txt_message.setText("Draw!\nYou didn't gain or lose any BattleCoins");
@@ -530,6 +547,7 @@ public class Black_Jack extends AppCompatActivity {
                             && (player2Deck.cardsTotalValue() > dealerDeck.cardsTotalValue())) {
                         txt_message.setText("You Win!\nYou gain " + player2Bet + " BattleCoins!");
                         Player2BattleCoins = Player2BattleCoins + player2Bet*2;
+                        sound.playCoinSound();
                     } else if (player2Deck.cardsTotalValue() <= 21 && dealerDeck.cardsTotalValue() <= 21
                             && (player2Deck.cardsTotalValue() < dealerDeck.cardsTotalValue())) {
                         txt_message.setText("You Lose!\nYou loss " + player2Bet + " BattleCoins!");
@@ -568,21 +586,18 @@ public class Black_Jack extends AppCompatActivity {
                     txt_message.setText("Congratulations! You have win the game by exceeding 2500 BattleCoins!");
                     txt_message.setVisibility(View.VISIBLE);
                     updateRealtimeServer_1();
-                    displayResult("win");
-                    // Todo: Navigate to result page
+                    handler.postDelayed(() -> displayResult("win"), 3000);
 
                 } else if (Player1BattleCoins == 0) {
                     txt_message.setText("Oops! You have lose the game by losing all BattleCoins!");
                     txt_message.setVisibility(View.VISIBLE);
                     updateRealtimeServer_1();
-                    displayResult("lose");
-                    // Todo: Navigate to result page
+                    handler.postDelayed(() -> displayResult("lose"), 3000);
                 } else {
                     txt_message.setText("Oops! You have lose the game by unable to reach 2500 BattleCoins in 5 rounds!");
                     txt_message.setVisibility(View.VISIBLE);
                     updateRealtimeServer_1();
-                    displayResult("lose");
-                    // Todo: Navigate to result page
+                    handler.postDelayed(() -> displayResult("lose"), 3000);
                 }
                 break;
             case 2:
@@ -683,5 +698,29 @@ public class Black_Jack extends AppCompatActivity {
         Intent intent = new Intent(Black_Jack.this, Result.class);
         intent.putExtra("result", result);
         startActivity(intent);
+    }
+
+    void instruction() {
+        String instruction = "Black Jack Instruction\nThe object of the game of Blackjack is to have your cards total 21 or as near to 21 as possible without going over 21.In Blackjack, everyone plays against the dealer (the house). Your goal is to draw cards with a value as close to 21 as possible without going over. A hand that goes over 21 is a bust or break . You are playing against the dealer. Each player only has to beat the dealer's hand to Win. You do this in one of two ways: 1 Have a card total value greater than that of the dealer and not \"bust\". 2 Win \"by default” if the dealer \"busts.\n" +
+                "When you receive your first two cards, you may either \"Stand\", \"Hit\". When you \"Stand\" it means you feel you are close enough to 21 and no longer wish any additional cards. On the other hand you may wish to receive another card or \"Hit\".\n" +
+                "All winning wagers are paid 1 to 1 with the exception of Blackjack which is paid at 1 to 1.5\n\n" +
+                "Your goal:\n" +
+                "Collect 2500 or above BattleCoins with 5 rounds.\n" +
+                "How to Play:\n" +
+                "1. Slide your bet within 0 to 1,000 BattleCoins (100 BC per bet), then press bet to start the game.\n" +
+                "2. Choose \"Stand\" or \"Hit\" by pressing relative button.\n" +
+                "3. if you are ready, press the \"Start\" button, trust your luck and have FUN!";
+        txt_instruction.setText(instruction);
+        txt_instruction.setVisibility(View.VISIBLE);
+        btn_bet.setVisibility(View.INVISIBLE);
+        btn_stand.setVisibility(View.INVISIBLE);
+        btn_hit.setVisibility(View.INVISIBLE);
+        btn_start.setVisibility(View.VISIBLE);
+
+        btn_start.setOnClickListener(v -> {
+            txt_instruction.setVisibility(View.INVISIBLE);
+            btn_start.setVisibility(View.INVISIBLE);
+            initState();
+        });
     }
 }

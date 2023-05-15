@@ -49,6 +49,10 @@ public class HomePage extends AppCompatActivity {
     String[] Games = {"Black Jack", "Speed", "Rank"};// "Queen of Spades",
 //    Button test;
 
+    public void PlayBackgroundSound() {
+        Intent intent = new Intent(HomePage.this, BackgroundSoundService.class);
+        startService(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +60,8 @@ public class HomePage extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
+        PlayBackgroundSound();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Assign variable
@@ -125,6 +131,8 @@ public class HomePage extends AppCompatActivity {
                 }
             });
         });
+
+
 
         //testing write to firebase realtime database
 //        test.setOnClickListener(view->{
