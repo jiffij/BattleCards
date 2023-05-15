@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Map;
 
 public class Black_Jack extends AppCompatActivity {
 
@@ -35,9 +36,11 @@ public class Black_Jack extends AppCompatActivity {
     private SeekBar sb_bet;
     private TextView txt_bet;
     private TextView txt_bet_now;
+    private TextView txt_bet_now2;
     private TextView txt_dealer_card_value;
     private TextView txt_message;
     private TextView txt_player_bc;
+    private TextView txt_player_bc2;
     private TextView txt_player1_card_value;
     private TextView txt_mul_player1_card_value;
     private TextView txt_mul_player2_card_value;
@@ -67,7 +70,6 @@ public class Black_Jack extends AppCompatActivity {
 
     // For multiplayer
     Realtime real;
-    //Intent intent = getIntent();
     String mode;
     String room;
 
@@ -95,9 +97,11 @@ public class Black_Jack extends AppCompatActivity {
         sb_bet = (SeekBar) findViewById(R.id.sb_bet);
         txt_bet = (TextView) findViewById(R.id.txt_bet);
         txt_bet_now = (TextView) findViewById(R.id.txt_bet_now);
+        txt_bet_now2 = (TextView) findViewById(R.id.txt_bet_now2);
         txt_message = (TextView) findViewById(R.id.txt_message);
         txt_dealer_card_value = (TextView) findViewById(R.id.txt_dealer_card_value);
         txt_player_bc = (TextView) findViewById(R.id.txt_player_bc);
+        txt_player_bc2 = (TextView) findViewById(R.id.txt_player_bc2);
         txt_player1_card_value = (TextView) findViewById(R.id.txt_player1_card_value);
         txt_mul_player1_card_value = (TextView) findViewById(R.id.txt_mul_player1_card_value);
         txt_mul_player2_card_value = (TextView) findViewById(R.id.txt_mul_player2_card_value);
@@ -112,7 +116,10 @@ public class Black_Jack extends AppCompatActivity {
         mode = intent.getStringExtra("mode");
         //room = mode.equals("multi")? intent.getStringExtra("room"): null;
         room = "999";
-        //real = new Realtime(room);
+        if (room != null) {
+            real = new Realtime(room);
+            //addListener(real);
+        }
         //thisPlayer = 1;
         //numOfPlayer = 1;
 
@@ -157,14 +164,18 @@ public class Black_Jack extends AppCompatActivity {
         img_player1card_3.setVisibility(View.INVISIBLE);
         img_player1card_4.setVisibility(View.INVISIBLE);
         img_player1card_5.setVisibility(View.INVISIBLE);
+        if (numOfPlayer == 1) {
+            txt_player_bc2.setVisibility(View.INVISIBLE);
+            txt_bet_now2.setVisibility(View.INVISIBLE);
+        }
         switch (thisPlayer) {
             case 1:
                 txt_player_bc.setText("Player's Remaining BattleCoins: \n" + Player1BattleCoins + " bc");
                 txt_bet_now.setText("Player's bet: " + player1Bet + " bc");
                 break;
             case 2:
-                txt_player_bc.setText("Player's Remaining BattleCoins: \n" + Player2BattleCoins + " bc");
-                txt_bet_now.setText("Player's bet: " + player2Bet + " bc");
+                txt_player_bc2.setText("Player's Remaining BattleCoins: \n" + Player2BattleCoins + " bc");
+                txt_bet_now2.setText("Player's bet: " + player2Bet + " bc");
             default:
         }
         sb_bet.setVisibility(View.VISIBLE);
@@ -211,15 +222,15 @@ public class Black_Jack extends AppCompatActivity {
                     }
                     txt_player_bc.setText("Player's Remaining BattleCoins: \n" + Player1BattleCoins + " bc");
                     txt_bet_now.setText("Player's bet: " + player1Bet + " bc");
+                    if (numOfPlayer == 2) {
+                        real.write("player1Bet", player1Bet);
+                    }
                     if (player1Bet != 0)
                     {
                         btn_bet.setVisibility(View.INVISIBLE);
                         txt_bet.setVisibility(View.INVISIBLE);
                         sb_bet.setVisibility(View.INVISIBLE);
-                        if (numOfPlayer == 2) {
-                            currentPlayer = 2;
-                            thisPlayer = 2;
-                        } else startRound();
+                        startRound();
                     }
                     else {
                         txt_message.setText("You cannot bet 0 BattleCoins!");
@@ -238,6 +249,9 @@ public class Black_Jack extends AppCompatActivity {
                     }
                     txt_player_bc.setText("Player's Remaining BattleCoins: \n" + Player2BattleCoins + " bc");
                     txt_bet_now.setText("Player's bet: " + player2Bet + " bc");
+                    if (numOfPlayer == 2) {
+                        real.write("player2Bet", player2Bet);
+                    }
                     if (player2Bet != 0)
                     {
                         btn_bet.setVisibility(View.INVISIBLE);
@@ -273,9 +287,10 @@ public class Black_Jack extends AppCompatActivity {
             player2Deck.draw(mainDeck);
             player2Deck.draw(mainDeck);
         }
+        // Todo player 2 need to get value from realtime server
         String dealer_value = "" + dealerDeck.cardsTotalValue();
         txt_dealer_card_value.setText(dealer_value);
-        txt_dealer_card_value.setVisibility(View.VISIBLE);
+//        txt_dealer_card_value.setVisibility(View.VISIBLE);
         String player1_value = "" + player1Deck.cardsTotalValue();
         if (numOfPlayer == 1) {
             txt_player1_card_value.setText(player1_value);
@@ -405,6 +420,9 @@ public class Black_Jack extends AppCompatActivity {
                     update();
                 }
                 else if (player1Finish && player1gameEnd) {
+                    txt_dealer_card_value.setVisibility(View.VISIBLE);
+                    img_dealer_card_2.setImageDrawable(getCardImage(dealerDeck, 1));
+                    img_dealer_card_2.setVisibility(View.VISIBLE);
                     update();
                 }
                 break;
@@ -417,6 +435,7 @@ public class Black_Jack extends AppCompatActivity {
                     // player 2 turn
                     currentPlayer += 1;
                     thisPlayer = currentPlayer;
+                    real.write("currentPlayer", 2);
                 }
                 if (player1Finish && player2Finish && !gameEnd) {
                     computerTurn();
@@ -456,6 +475,7 @@ public class Black_Jack extends AppCompatActivity {
 
             String dealer_value = "" + dealerDeck.cardsTotalValue();
             txt_dealer_card_value.setText(dealer_value);
+            txt_dealer_card_value.setVisibility(View.VISIBLE);
         }
         // gameEnd = true;
     }
@@ -538,6 +558,7 @@ public class Black_Jack extends AppCompatActivity {
         if (numOfPlayer == 2) {
             player2Deck.returnAllCards(mainDeck);
         }
+        real.write("dealerDeck", dealerDeck.getAllCardName());
         dealerDeck.returnAllCards(mainDeck);
         switch (numOfPlayer) {
             case 1:
@@ -546,17 +567,21 @@ public class Black_Jack extends AppCompatActivity {
                 } else if (Player1BattleCoins >= 2500) {
                     txt_message.setText("Congratulations! You have win the game by exceeding 2500 BattleCoins!");
                     txt_message.setVisibility(View.VISIBLE);
-                    //updateRealtimeServer();
+                    updateRealtimeServer_1();
+                    displayResult("win");
                     // Todo: Navigate to result page
+
                 } else if (Player1BattleCoins == 0) {
                     txt_message.setText("Oops! You have lose the game by losing all BattleCoins!");
                     txt_message.setVisibility(View.VISIBLE);
-                    //updateRealtimeServer();
+                    updateRealtimeServer_1();
+                    displayResult("lose");
                     // Todo: Navigate to result page
                 } else {
                     txt_message.setText("Oops! You have lose the game by unable to reach 2500 BattleCoins in 5 rounds!");
                     txt_message.setVisibility(View.VISIBLE);
-                    //updateRealtimeServer();
+                    updateRealtimeServer_1();
+                    displayResult("lose");
                     // Todo: Navigate to result page
                 }
                 break;
@@ -613,14 +638,50 @@ public class Black_Jack extends AppCompatActivity {
         }
     }
 
-    void updateRealtimeServer() {
-        real.write("A", 12);
-//        real.write("player1Bet", player1Bet);
-//        real.write("numOfPlayer", numOfPlayer);
-//        real.write("currentPlayer", currentPlayer);
-//        real.write("Player1BattleCoins", Player1BattleCoins);
-//        real.write("round", round);
+    void updateRealtimeServer_1() {
+        real.write("player1Bet", player1Bet);
+        real.write("numOfPlayer", numOfPlayer);
+        real.write("currentPlayer", currentPlayer);
+        real.write("Player1BattleCoins", Player1BattleCoins);
+        real.write("round", round);
     }
 
     //********************************************************************************************
+    void addListener(Realtime real) {
+        real.addListener((snapshot) -> {
+            Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+            String Player1BattleCoins = (String) map.get("Player1BattleCoins");
+            String Player2BattleCoins = (String) map.get("Player2BattleCoins");
+            String player1Bet = (String) map.get("player1Bet");
+            String player2Bet = (String) map.get("player2Bet");
+            String round = (String) map.get("round");
+            String currentPlayer = (String) map.get("currentPlayer");
+            List dealerDeck = (List) map.get("dealerDeck");
+
+            if (round != null) {
+                txt_round.setText("Round: " + round + " out of 5");
+            }
+            if (Integer.parseInt(player1Bet) != 0) {
+                this.player2Bet = Integer.parseInt(player1Bet);
+            }
+            if (Integer.parseInt(player2Bet) != 0) {
+                this.player2Bet = Integer.parseInt(player2Bet);
+            }
+            if (Integer.parseInt(currentPlayer) == 2) {
+                this.currentPlayer = 2;
+            }
+            if (Integer.parseInt(Player1BattleCoins) != 0) {
+                this.Player1BattleCoins = Integer.parseInt(Player1BattleCoins);
+            }
+            if (Integer.parseInt(Player2BattleCoins) != 0) {
+                this.Player2BattleCoins = Integer.parseInt(Player2BattleCoins);
+            }
+        });
+    }
+
+    void displayResult(String result) {
+        Intent intent = new Intent(Black_Jack.this, Result.class);
+        intent.putExtra("result", result);
+        startActivity(intent);
+    }
 }

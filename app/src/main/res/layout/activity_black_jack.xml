@@ -130,7 +130,7 @@
 
     <TextView
         android:id="@+id/txt_bet_now2"
-        android:layout_width="120dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:background="#FFFFFF"
@@ -149,14 +149,14 @@
 
     <TextView
         android:id="@+id/txt_player_bc2"
-        android:layout_width="120dp"
+        android:layout_width="140dp"
         android:layout_height="50dp"
-        android:layout_marginStart="592dp"
+        android:layout_marginStart="572dp"
         android:background="#FFFFFF"
 
         android:gravity="start"
         android:paddingLeft="10dp"
-        android:text="Player's Remaining Battlecoins: \n$1000"
+        android:text="Player 2's Remaining Battlecoins: \n$1000"
         android:textAlignment="viewStart"
         android:textColor="#000000"
         android:textSize="12sp"
@@ -269,13 +269,13 @@
 
     <TextView
         android:id="@+id/txt_bet_now"
-        android:layout_width="120dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:paddingLeft="10dp"
         android:background="#FFFFFF"
         android:gravity="start"
-        android:text="Player's bet: $0"
+        android:paddingLeft="10dp"
+        android:text="Player 1's bet: $0"
         android:textAlignment="viewStart"
         android:textColor="#000000"
         android:textSize="12sp"
@@ -288,13 +288,13 @@
 
     <TextView
         android:id="@+id/txt_player_bc"
-        android:layout_width="120dp"
+        android:layout_width="140dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:paddingLeft="10dp"
         android:background="#FFFFFF"
         android:gravity="start"
-        android:text="Player's Remaining Battlecoins: \n$1000"
+        android:text="Player 1's Remaining Battlecoins: \n$1000"
         android:textAlignment="viewStart"
         android:textColor="#000000"
         android:textSize="12sp"
