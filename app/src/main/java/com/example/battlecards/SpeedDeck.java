@@ -64,9 +64,10 @@ public class SpeedDeck extends UIDeck {
                     this.speed.rightPool.addCardWithImgNameToTop(rightPool);
 //                    right = rightPool;
                 }
-                if(!winner.equals("")){
+                if(winner != null && !winner.equals("")){
                     this.speed.winner = winner.equals("A")? PLAYERS.A: PLAYERS.B;
                 }
+                if(Awant != null)
                 if(Awant.equals("Y") && Bwant.equals("Y")){
                     speed.wantCard(PLAYERS.A);
                     speed.wantCard(PLAYERS.B);

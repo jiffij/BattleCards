@@ -5,6 +5,8 @@ import android.content.Intent;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.lwjgl.Sys;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -37,7 +39,7 @@ public class GPS extends Thread {
                 double lat2 = (double) value.get("latitude");
                 double lon2 = (double) value.get("longitude");
                 double dist = distance(latitude, longitude, lat2, lon2);
-                if(dist < 5000){
+                if(dist < 20){
                     int roomId = id > Integer.parseInt(key)? id: Integer.parseInt(key);
                     real.removeItem(String.valueOf(id));
                     if(roomId == id){
@@ -45,7 +47,11 @@ public class GPS extends Thread {
                         one.write("game", this.game);
                     }
                     if(game.equals("Speed")) {
+                        real.removeListener();
+                        System.out.println(roomId);
+
                         Intent intent1 = new Intent(this.appContext, SpeedLauncher.class);
+                        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent1.putExtra("mode", "multi");
                         intent1.putExtra("player", roomId == id? "A": "B");
                         intent1.putExtra("room", Integer.toString(roomId));
@@ -53,9 +59,11 @@ public class GPS extends Thread {
                     }else{ //TODO black jack
 
                     }
+
                     break;
                 }
             }
+
         });
     }
 

@@ -58,8 +58,9 @@ public class GPSearch extends AppCompatActivity implements LocationListener {
         }
         gps = new GPS(game, getApplicationContext());
         gps.start();
-        if(loc != null)
-        gps.update(loc.getLatitude(), loc.getLongitude());
+        if(loc != null) {
+            gps.update(loc.getLatitude(), loc.getLongitude());
+        }
     }
 
     @Override
