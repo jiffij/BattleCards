@@ -492,6 +492,7 @@ public class Black_Jack extends AppCompatActivity {
     }
 
     void update() {
+        txt_dealer_card_value.setVisibility(View.VISIBLE);
         for (int i = 1; i <= numOfPlayer; i ++) {
             switch (i) {
                 case 1:
