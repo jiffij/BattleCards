@@ -87,6 +87,14 @@ public class OpenRoom extends AppCompatActivity {
                     intent1.putExtra("room", Integer.toString(id));
                     startActivity(intent1);
                 }
+                else if(game.equals("Black Jack")) {
+                    Intent intent1 = new Intent(OpenRoom.this, Black_Jack.class);
+                    intent1.putExtra("mode", "multi");
+                    intent1.putExtra("player", "1");
+                    intent1.putExtra("numOfPlayer", "2");
+                    intent1.putExtra("room", Integer.toString(id));
+                    startActivity(intent1);
+                }
                 real.removeListener();
             }
 

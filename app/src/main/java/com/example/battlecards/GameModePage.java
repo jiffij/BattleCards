@@ -87,7 +87,14 @@ public class GameModePage extends AppCompatActivity {
                             intent3.putExtra("player", "A");
                             startActivity(intent3);
                         }
-                        else if(game.equals("Black Jack"));//TODO
+                        else if(game.equals("Black Jack")) {
+                            Intent intent4 = new Intent(GameModePage.this, Black_Jack.class);
+                            intent4.putExtra("mode", "ai");
+                            intent4.putExtra("player", "1");
+                            intent4.putExtra("numOfPlayer", "1");
+                            intent4.putExtra("game", game);
+                            startActivity(intent4);
+                        };
                         break;
                     case "Nearby rooms":
                         Intent intent4 = new Intent(GameModePage.this, GPSearch.class);
