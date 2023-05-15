@@ -94,6 +94,7 @@ public class GPS extends Thread {
 
     public void end(){
         this.keep = false;
+        real.removeItem(String.valueOf(id));
     }
 
     public void update(double la, double lo){
