@@ -52,10 +52,13 @@ public class GPSearch extends AppCompatActivity implements LocationListener {
         System.out.println("after permission check");
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        latitude_tv.setText("Latitude: " + loc.getLatitude());
-        longitude_tv.setText("Longitude: " + loc.getLongitude());
+        if(loc != null) {
+            latitude_tv.setText("Latitude: " + loc.getLatitude());
+            longitude_tv.setText("Longitude: " + loc.getLongitude());
+        }
         gps = new GPS(game, getApplicationContext());
         gps.start();
+        if(loc != null)
         gps.update(loc.getLatitude(), loc.getLongitude());
     }
 

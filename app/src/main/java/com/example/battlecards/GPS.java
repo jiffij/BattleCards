@@ -37,7 +37,7 @@ public class GPS extends Thread {
                 double lat2 = (double) value.get("latitude");
                 double lon2 = (double) value.get("longitude");
                 double dist = distance(latitude, longitude, lat2, lon2);
-                if(dist < 2){
+                if(dist < 5000){
                     int roomId = id > Integer.parseInt(key)? id: Integer.parseInt(key);
                     real.removeItem(String.valueOf(id));
                     if(roomId == id){

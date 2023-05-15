@@ -46,7 +46,7 @@ public class HomePage extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     GoogleSignInClient googleSignInClient;
     ListView scrollMenu;
-    String[] Games = {"Black Jack", "Speed", "Queen of Spades", "Rank"};
+    String[] Games = {"Black Jack", "Speed", "Rank"};// "Queen of Spades",
 //    Button test;
 
     @Override

@@ -173,7 +173,7 @@ public class SpeedDeck extends UIDeck {
     public boolean update(){
         if(this.speed.leftPool.isEmpty() || this.speed.rightPool.isEmpty()) return false;
         if(speed.gameLoop()){
-            if(me == this.speed.winner)
+            if(online && me == this.speed.winner)
                 real.write("winner", me == PLAYERS.A? "A":"B");
             return true;
         }
@@ -201,7 +201,7 @@ public class SpeedDeck extends UIDeck {
     @Override
     public void dispose(){
         super.dispose();
-        real.removeListener();
+        if(online) real.removeListener();
     }
 
 }
