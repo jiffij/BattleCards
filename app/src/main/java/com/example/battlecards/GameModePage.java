@@ -96,6 +96,13 @@ public class GameModePage extends AppCompatActivity {
                             startActivity(intent4);
                         };
                         break;
+                    case "Nearby rooms":
+                        Intent intent4 = new Intent(GameModePage.this, GPSearch.class);
+                        intent4.putExtra("mode", "GPS");
+                        intent4.putExtra("player", "A");
+                        intent4.putExtra("game", game);
+                        startActivity(intent4);
+                        break;
                     default:
                         break;
                 }

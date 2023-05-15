@@ -1,6 +1,9 @@
 package com.example.battlecards;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,7 +55,6 @@ public class Deck {
         cardDeck.removeCard(0);
         this.numOfCards += 1;
     }
-
     //********************************************************************************************
     public void moveToTopFrom(Deck cardDeck, int i){
         this.cards.add(0, cardDeck.getCard(i));
@@ -110,6 +112,24 @@ public class Deck {
     public int length(){
         return this.cards.size();
     }
+    public void addCardWithImgNameToTop(String name){
+        String suit = name.substring(0,1);
+        String value = name.substring(1).toUpperCase();
+//        List cardSuitList = new ArrayList(Arrays.asList(cardSuitAlpha));
+//        List cardValueList = new ArrayList(Arrays.asList(cardValue));
+        int suitIdx = Arrays.asList(cardSuitAlpha).indexOf(suit);
+        int valueIdx = Arrays.asList(cardValue).indexOf(value);
+//        Log.d("suit", String.valueOf(suitIdx));
+//        Log.d("value", String.valueOf(valueIdx));
+        this.cards.add(0, new Card(cardSuit[suitIdx], cardValue[valueIdx], cardIntValue[valueIdx], cardSuitAlpha[suitIdx]));
+    }
+
+    public void addAllCardWithImgName(List<String> nameList){
+        for(String key: nameList){
+            this.addCardWithImgNameToTop(key);
+        }
+    }
+
     //********************************************************************************************
     public int cardsTotalValue(){
         int cardsTotalValue = 0;
@@ -173,7 +193,6 @@ public class Deck {
         cardsOutput += " "+ this.cards.get(0) + ", ?";
         return cardsOutput ;
     }
-    //********************************************************************************************
 
 }
 

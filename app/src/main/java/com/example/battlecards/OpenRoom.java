@@ -95,7 +95,9 @@ public class OpenRoom extends AppCompatActivity {
                     intent1.putExtra("room", Integer.toString(id));
                     startActivity(intent1);
                 }
+                real.removeListener();
             }
+
         });
     }
 

@@ -40,7 +40,6 @@ public class Realtime {
 //
 //        });
 //    }
-
     void write(String path, int value){
         myRef.child(path).setValue(value, new DatabaseReference.CompletionListener() {
             @Override
@@ -111,6 +110,10 @@ public class Realtime {
 
             }
         });
+    }
+
+    void removeItem(String path){
+        myRef.child(path).removeValue();
     }
 
     void removeListener(){

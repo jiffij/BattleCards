@@ -23,6 +23,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SpeedUI extends ApplicationAdapter {
 //    SpriteBatch batch;
@@ -39,6 +40,7 @@ public class SpeedUI extends ApplicationAdapter {
     PLAYERS me;
     String room;
     Context context;
+    boolean ready = false;
 
     SpeedUI(String mode, String player, String room, Context context){
         this.mode = mode;
@@ -56,19 +58,50 @@ public class SpeedUI extends ApplicationAdapter {
         batch = new SpriteBatch();
 
         stage = new Stage();
-        speedDeck = new SpeedDeck(stage, screenWidth, screenHeight, me);
+        speedDeck = new SpeedDeck(stage, screenWidth, screenHeight, me, this.mode.equals("ai")? false: true, room);
         speedDeck.load();
         speedDeck.addActor("back");
         Gdx.input.setInputProcessor(stage);
-        speedDeck.InitAnim();
+        if(this.me == PLAYERS.A) speedDeck.InitAnim();
         if(this.mode.equals("ai")) {
             speedEnemy = new SpeedAIEnemy(speedDeck);
             speedEnemy.start();
+            ready = true;
         }else{
             if(me == PLAYERS.A) {
                 Realtime real = new Realtime(room);
                 real.write("BHand", speedDeck.speed.BHand.getAllCardName());
                 real.write("BDeck", speedDeck.speed.BDeck.getAllCardName());
+                List<String> lr = this.speedDeck.speed.pool();
+                real.write("left", lr.get(0));
+                real.write("right", lr.get(1));
+                real.write("winner", "");
+                real.write("AWant", "N");
+                real.write("BWant", "N");
+                ready = true;
+            }else{//TODO player B
+                Realtime real = new Realtime(room);
+                real.addListener((snapshot -> {
+                    Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+                    List deck = (List) map.get("BDeck");
+                    List hand = (List) map.get("BHand");
+                    String leftPool = (String) map.get("left");
+                    String rightPool = (String) map.get("right");
+                    if(leftPool == null ) return;
+                    this.speedDeck.speed.ADeck.addAllCardWithImgName(deck);
+                    this.speedDeck.speed.AHand.addAllCardWithImgName(hand);
+                    this.speedDeck.speed.leftPool.addCardWithImgNameToTop(leftPool);
+                    this.speedDeck.speed.rightPool.addCardWithImgNameToTop(rightPool);
+
+                    speedDeck.InitAnim();
+                    ready = true;
+//                    speedDeck.getCard(speedDeck.left).setPosition(speedDeck.leftPos, speedDeck.midYPos);
+//                    speedDeck.addActor(speedDeck.getCard(speedDeck.left));
+//                    speedDeck.getCard(speedDeck.right).setPosition(speedDeck.rightPos, speedDeck.midYPos);
+//                    speedDeck.addActor(speedDeck.getCard(speedDeck.right));
+
+                    real.removeListener();
+                }));
             }
         }
     }
@@ -82,9 +115,12 @@ public class SpeedUI extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        if(ready) {
+            if (speedDeck.update()) dispose();
+        }
         batch.end();
-//        if(speedDeck.update()) dispose();
-        dispose();
+
+//        dispose();
         stage.act();
         stage.draw();
     }
@@ -101,7 +137,7 @@ public class SpeedUI extends ApplicationAdapter {
         System.out.println("dispose");
         Gdx.app.exit();
         Intent intent1 = new Intent(this.context, Result.class);
-        intent1.putExtra("result", this.speedDeck.speed.winner == PLAYERS.A? "win": "loss");
+        intent1.putExtra("result", this.speedDeck.speed.winner == me? "win": "loss");
         intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent1);
     }

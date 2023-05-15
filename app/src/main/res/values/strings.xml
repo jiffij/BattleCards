@@ -4,4 +4,6 @@
     <string name="login">Google Login</string>
     <string name="RoomWaitMessage">Waiting others to join...</string>
     <string name="Back">Back To Menu</string>
+    <string name="latitude">Latitude: waiting...</string>
+    <string name="Longitude">Longitude: waiting...</string>
 </resources>
