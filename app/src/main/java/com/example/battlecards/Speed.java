@@ -21,7 +21,7 @@ public abstract class Speed {
     protected boolean AWant = false;
     protected boolean BWant = false;
     protected boolean GameContinue = false;
-    protected PLAYERS winner = PLAYERS.NONE;
+    PLAYERS winner = PLAYERS.NONE;
 
     public abstract PLAYERS checkWin();
     public abstract List<String> pool();

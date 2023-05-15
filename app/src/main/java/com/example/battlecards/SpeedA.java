@@ -107,10 +107,8 @@ public class SpeedA extends Speed {
 //        PLAYERS winner = PLAYERS.NONE;
 //        while(GameContinue){
         flipNewCard();
-        winner = checkWin();
-//            if(winner != PLAYERS.NONE) GameContinue = false;
-//        }
-        if(winner != PLAYERS.NONE) return true;
+        if(winner == PLAYERS.NONE) winner = checkWin();
+        else return true;
         return false;
     }
 }

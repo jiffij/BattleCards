@@ -14,13 +14,10 @@ public class SpeedB extends Speed {
         right = new Deck();
         leftPool = new Deck();
         rightPool = new Deck();
-
     }
 
     public PLAYERS checkWin(){
         if(ADeck.isEmpty() && AHand.isEmpty()){
-            return PLAYERS.A;
-        }else if(BDeck.isEmpty() && BHand.isEmpty()){
             return PLAYERS.B;
         }else{
             return PLAYERS.NONE;
@@ -91,10 +88,8 @@ public class SpeedB extends Speed {
 //        PLAYERS winner = PLAYERS.NONE;
 //        while(GameContinue){
         flipNewCard();
-        winner = checkWin();
-//            if(winner != PLAYERS.NONE) GameContinue = false;
-//        }
-        if(winner != PLAYERS.NONE) return true;
+        if(winner == PLAYERS.NONE) winner = checkWin();
+        else return true;
         return false;
     }
 }

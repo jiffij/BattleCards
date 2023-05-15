@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
+import org.lwjgl.Sys;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,21 +23,55 @@ public class SpeedDeck extends UIDeck {
     boolean online;
     String room;
     Realtime real;
+    PLAYERS me;
     public SpeedDeck(Stage stage, int screenWidth, int screenHeight, PLAYERS me, boolean online, String room) {
         super(stage, screenWidth, screenHeight);
-        this.speed = (me == PLAYERS.A)? new SpeedA(): new SpeedB();
-        List<String> lr = this.speed.pool();
-        left = lr.get(0);
-        right = lr.get(1);
-        leftPos = screenWidth/2 - (cardWidth+20);
-        rightPos = screenWidth/2 + (cardWidth+20);
-        midYPos = screenHeight/2-cardHeight/2;
-        handStartX = screenWidth/2 - 2*(cardWidth+10);
+        this.speed = (me == PLAYERS.A) ? new SpeedA() : new SpeedB();
+        this.me = me;
+
+        if(me == PLAYERS.A) {
+            List<String> lr = this.speed.pool();
+            left = lr.get(0);
+            right = lr.get(1);
+        }else{
+            left = "";
+            right = "";
+        }
+        leftPos = screenWidth / 2 - (cardWidth + 20);
+        rightPos = screenWidth / 2 + (cardWidth + 20);
+        midYPos = screenHeight / 2 - cardHeight / 2;
+        handStartX = screenWidth / 2 - 2 * (cardWidth + 10);
         space = cardWidth + 10;
         enemy = new SpeedAIEnemy(this);
         this.online = online;
         this.room = room;
-        if(room != null) real = new Realtime(room);
+        if (online && room != null) {//online mode, add pool card to top
+            real = new Realtime(room);
+            real.addListener((snapshot) -> {
+                Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+                String winner = (String) map.get("winner");
+                String leftPool = (String) map.get("left");
+                String rightPool = (String) map.get("right");
+                String Awant = (String) map.get("AWant");
+                String Bwant = (String) map.get("BWant");
+                if(leftPool != null && !leftPool.equals(left)){
+                    this.speed.leftPool.addCardWithImgNameToTop(leftPool);
+//                    left = leftPool;
+                }
+                if(rightPool != null && !rightPool.equals(right)){
+                    this.speed.rightPool.addCardWithImgNameToTop(rightPool);
+//                    right = rightPool;
+                }
+                if(!winner.equals("")){
+                    this.speed.winner = winner.equals("A")? PLAYERS.A: PLAYERS.B;
+                }
+                if(Awant.equals("Y") && Bwant.equals("Y")){
+                    speed.wantCard(PLAYERS.A);
+                    speed.wantCard(PLAYERS.B);
+                    real.write(me == PLAYERS.A? "AWant":"BWant", "N");
+                }
+            });
+        }
     }
     public void load(){
         String cardSuitAlpha[] = {"s", "h", "c", "d"};
@@ -71,13 +107,16 @@ public class SpeedDeck extends UIDeck {
         cardImageList.get(3).addAction(Actions.sequence(Actions.moveTo(screenWidth/2 + (cardWidth+10),screenHeight-cardHeight,0.5f)));
         cardImageList.get(4).addAction(Actions.sequence(Actions.moveTo(screenWidth/2 + 2*(cardWidth+10),screenHeight-cardHeight,0.5f)));
         cardImageList.get(5).addAction(Actions.sequence(Actions.moveTo(screenWidth/2 - (2*cardWidth+50),screenHeight/2-cardHeight/2,0.5f)));
-        cardImageList.get(6).addAction(Actions.sequence(Actions.moveTo(screenWidth/2 - (cardWidth+20),screenHeight/2-cardHeight/2,0.5f)));
-        cardImageList.get(7).addAction(Actions.sequence(Actions.moveTo(screenWidth/2 + (cardWidth+20),screenHeight/2-cardHeight/2,0.5f)));
+//        cardImageList.get(6).addAction(Actions.sequence(Actions.moveTo(screenWidth/2 - (cardWidth+20),screenHeight/2-cardHeight/2,0.5f)));
+//        cardImageList.get(7).addAction(Actions.sequence(Actions.moveTo(screenWidth/2 + (cardWidth+20),screenHeight/2-cardHeight/2,0.5f)));
         cardImageList.get(8).addAction(Actions.sequence(Actions.moveTo(screenWidth/2 + (2*cardWidth+50),screenHeight/2-cardHeight/2,0.5f)));
         InputListener onPress = new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // Handle touch down event
                 speed.wantCard(PLAYERS.A);
+                if(online){
+                    real.write(me == PLAYERS.A? "AWant":"BWant", "Y");
+                }
                 addActor(getCard("blue"));
                 return true; // Return true to indicate that the event was handled
             }
@@ -88,11 +127,18 @@ public class SpeedDeck extends UIDeck {
             }
         };
         cardImageList.get(8).addListener(onPress);
+
+        if(this.me == PLAYERS.B) {
+            List<String> lr = this.speed.pool();
+            left = lr.get(0);
+            right = lr.get(1);
+        }
         this.getCard(left).setPosition(leftPos,midYPos);
         this.addActor(this.getCard(left));
         this.getCard(right).setPosition(rightPos, midYPos);
         this.addActor(this.getCard(right));
         this.loadHand();
+        System.out.println("after load hand");
     }
 
     public void loadHand(){
@@ -116,7 +162,10 @@ public class SpeedDeck extends UIDeck {
     }
 
     public boolean update(){
+        if(this.speed.leftPool.isEmpty() || this.speed.rightPool.isEmpty()) return false;
         if(speed.gameLoop()){
+            if(me == this.speed.winner)
+                real.write("winner", me == PLAYERS.A? "A":"B");
             return true;
         }
         List<String> lr = this.speed.pool();

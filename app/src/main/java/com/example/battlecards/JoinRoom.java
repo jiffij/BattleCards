@@ -2,6 +2,7 @@ package com.example.battlecards;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +25,8 @@ public class JoinRoom extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-
+        Intent intent = getIntent();
+        String game = intent.getStringExtra("game");
         RoomInput = findViewById(R.id.enterRoomId);
         JoinButton = findViewById(R.id.joinBtn);
 
@@ -33,9 +35,9 @@ public class JoinRoom extends AppCompatActivity {
             public void onClick(View v) {
                 String text = RoomInput.getText().toString().trim();
                 Realtime real = new Realtime(text);
-                List list = new ArrayList();
-                list.add("");
-                real.write("B", list);
+//                List list = new ArrayList();
+//                list.add("");
+//                real.write("B", list);
                 real.addListener((snapshot)->{
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
                     Long val = (Long) map.get("players");
@@ -46,7 +48,14 @@ public class JoinRoom extends AppCompatActivity {
                     }
                     ++num_player;
                     real.write("players", num_player);
-
+                    if (game.equals("Speed")) {
+                        Intent intent1 = new Intent(JoinRoom.this, SpeedLauncher.class);
+                        intent1.putExtra("mode", "multi");
+                        intent1.putExtra("player", "B");
+                        intent1.putExtra("room", text);
+                        startActivity(intent1);
+                    }
+                    real.removeListener();
                 });
 
             }
