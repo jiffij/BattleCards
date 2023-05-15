@@ -112,6 +112,10 @@ public class Realtime {
         });
     }
 
+    void removeItem(String path){
+        myRef.child(path).removeValue();
+    }
+
     void removeListener(){
         myRef.removeEventListener(listener);
     }

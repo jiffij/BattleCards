@@ -39,6 +39,7 @@ public class GPS extends Thread {
                 double dist = distance(latitude, longitude, lat2, lon2);
                 if(dist < 2){
                     int roomId = id > Integer.parseInt(key)? id: Integer.parseInt(key);
+                    real.removeItem(String.valueOf(id));
                     if(roomId == id){
                         Realtime one = new Realtime(String.valueOf(roomId));
                         one.write("game", this.game);
