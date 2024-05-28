@@ -1,8 +1,13 @@
 # BattleCards
 
 ## Application Structure
-![alt text](imgs/flow.png)
+<!-- ![alt text](imgs/flow.png) -->
+<figure class="image">
+  <img src="imgs/flow.png">
+  <figcaption></figcaption>
+</figure>
 The proposed game flow of our system involves a series of steps to enable users to access and participate in various card games. To begin with, users are required to log in using their Google account. In the event that they are not registered, they will be directed to a registration page on Firebase Authentication. Once logged in, players can select their preferred card game and game mode. Depending on the selected game mode, users may be prompted to either create or join a room if they wish to play with other users. In the case of private rooms, a password will be required for entry. Alternatively, for games involving AI or random gameplay, users will be able to enter the game immediately. Following the game, a result page will be displayed, showing the user's records and providing an option to share their achievements with friends via Gmail or WhatsApp.
+
 ![alt text](imgs/image.png)
 The system structure for our game app is illustrated in the figure above. It comprises an Android app (client) and Firebase (server and database). Firebase offers a range of services such as authentication, Firestore, Realtime Database, and messaging service for notification, all of which will be utilized in our app. To ensure user accountability, we require users to sign in with their Google account, given its widespread usage and convenience. User profile and records are stored in Firestore database, while a separate Realtime Database is used for gameplay. This database will synchronize all changes made by clients, for example, when a user receives or uses a card, other players listening will receive the updates. Finally, the client utilize the GPS provider to obtain its current position and upload the coordinates to the Realtime Database. If players are searching for nearby players, the app will read from the database and display only those within a 20 km radius.
 The below figures are the expected user interface of our application.
@@ -15,11 +20,19 @@ The below figures are the expected user interface of our application.
 ## Data Storage
 For the secure and organized storage of user data, we have opted to use Firebase Firestore. Our data structure involves the creation of a "user" collection, which utilize the "document" data type to store personal information for each player. To facilitate efficient data management, we store the data in a map format. By using this approach, we can ensure that user data is stored, retrieved, and updated in a reliable and efficient manner.
 
-![alt text](imgs/image-6.png)
-The data structure of user collection
+<!-- ![alt text](imgs/image-6.png) -->
+<figure class="image">
+  <img src="imgs/image-6.png">
+  <figcaption>The data structure of user collection</figcaption>
+</figure>
 
-![alt text](imgs/image-7.png)
-The data structure of ranking system
+
+<!-- ![alt text](imgs/image-7.png) -->
+<figure class="image">
+  <img src="imgs/image-7.png">
+  <figcaption>The data structure of ranking system</figcaption>
+</figure>
+
 
 Before accessing the Firebase, it is required to set up the environment and the dependency.
 ![alt text](imgs/image-8.png)
@@ -56,73 +69,169 @@ The final part of the app is playing and sharing with friends. The player can pr
 
 
 ## Gameplay results
-![alt text](imgs/image-11.png)
-Figure 1a: Create Room
+<!-- ![alt text](imgs/image-11.png) -->
+<figure class="image">
+  <img src="imgs/image-11.png">
+  <figcaption>Figure 1a: Create Room</figcaption>
+</figure>
 
-![alt text](imgs/image-12.png)
-Figure 1b: Join Room
 
-![alt text](imgs/image-13.png)
-Figure 2: Create and join room by Nearby rooms
+<!-- ![alt text](imgs/image-12.png) -->
+<figure class="image">
+  <img src="imgs/image-12.png">
+  <figcaption>Figure 1b: Join Room</figcaption>
+</figure>
 
-![alt text](imgs/image-14.png)
-Figure 3: Ranking page
+
+<!-- ![alt text](imgs/image-13.png) -->
+<figure class="image">
+  <img src="imgs/image-13.png">
+  <figcaption>Figure 2: Create and join room by Nearby rooms
+</figcaption>
+</figure>
+
+<!-- ![alt text](imgs/image-14.png) -->
+<figure class="image">
+  <img src="imgs/image-14.png">
+  <figcaption>Figure 3: Ranking page
+</figcaption>
+</figure>
 
 
 The above screenshots are the paring page and ranking page. In Figures 1a and 1b, players can create a room and join a room by inputting the room ID. Figure 2 shows that the player can play against random people by searching the nearby player. Figure 3 shows all player and their ranking, including number of wins and losses.
 
-![alt text](imgs/image-15.png)
-Figure 4: Instruction page of Black Jack
+<!-- ![alt text](imgs/image-15.png) -->
+<figure class="image">
+  <img src="imgs/image-15.png">
+  <figcaption>Figure 4: Instruction page of Black Jack
+</figcaption>
+</figure>
 
-![alt text](imgs/image-16.png)
-Figure 5a: Betting page
 
-![alt text](imgs/image-17.png)
-Figure 5b: 0 bet warning
+<!-- ![alt text](imgs/image-16.png) -->
+<figure class="image">
+  <img src="imgs/image-16.png">
+  <figcaption>Figure 5a: Betting page
+</figcaption>
+</figure>
 
-![alt text](imgs/image-18.png)
-Figure 6: Game play page
 
-![alt text](imgs/image-19.png)
-Figure 7a: Winning condition sample 1
+<!-- ![alt text](imgs/image-17.png) -->
+<figure class="image">
+  <img src="imgs/image-17.png">
+  <figcaption>Figure 5b: 0 bet warning
+</figcaption>
+</figure>
 
-![alt text](imgs/image-20.png)
-Figure 7b: Winning condition sample 2
 
-![alt text](imgs/image-21.png)
-Figure 7c: Winning condition sample 3
+<!-- ![alt text](imgs/image-18.png) -->
+<figure class="image">
+  <img src="imgs/image-18.png">
+  <figcaption>Figure 6: Game play page
+</figcaption>
+</figure>
 
-![alt text](imgs/image-22.png)
-Figure 8a: Losing condition sample 1
 
-![alt text](imgs/image-23.png)
-Figure 8b: Losing condition sample 1
+<!-- ![alt text](imgs/image-19.png) -->
+<figure class="image">
+  <img src="imgs/image-19.png">
+  <figcaption>Figure 7a: Winning condition sample 1
+</figcaption>
+</figure>
 
-![alt text](imgs/image-24.png)
-Figure 9a: Ending condition sample 1
 
-![alt text](imgs/image-25.png)
-Figure 9b: Ending condition sample 2
+<!-- ![alt text](imgs/image-20.png) -->
+<figure class="image">
+  <img src="imgs/image-20.png">
+  <figcaption>Figure 7b: Winning condition sample 2
+</figcaption>
+</figure>
+
+
+<!-- ![alt text](imgs/image-21.png) -->
+<figure class="image">
+  <img src="imgs/image-21.png">
+  <figcaption>Figure 7c: Winning condition sample 3
+</figcaption>
+</figure>
+
+
+<!-- ![alt text](imgs/image-22.png) -->
+<figure class="image">
+  <img src="imgs/image-22.png">
+  <figcaption>Figure 8a: Losing condition sample 1
+</figcaption>
+</figure>
+
+
+<!-- ![alt text](imgs/image-23.png) -->
+<figure class="image">
+  <img src="imgs/image-23.png">
+  <figcaption>Figure 8b: Losing condition sample 1
+</figcaption>
+</figure>
+
+
+<!-- ![alt text](imgs/image-24.png) -->
+<figure class="image">
+  <img src="imgs/image-24.png">
+  <figcaption>Figure 9a: Ending condition sample 1
+</figcaption>
+</figure>
+
+
+<!-- ![alt text](imgs/image-25.png) -->
+<figure class="image">
+  <img src="imgs/image-25.png">
+  <figcaption>Figure 9b: Ending condition sample 2
+</figcaption>
+</figure>
+
 
 The above screenshots are the gameplay of Black Jack. It contains multiple elements such as TextView, Button, and Soundpool as music effects, etc. Users can play the game easily by sliding or pressing buttons only. For new players, we included a simple instruction page for users to understand and know how to play our game. From Figures 7, 8 and 9, we added different text popouts in different situations to immerse users in the game and improve their gaming experience.
 
-![alt text](imgs/image-26.png)
-Figure 10a: Speed gameplay
+<!-- ![alt text](imgs/image-26.png) -->
+<figure class="image">
+  <img src="imgs/image-26.png">
+  <figcaption>Figure 10a: Speed gameplay
+</figcaption>
+</figure>
 
-![alt text](imgs/image-27.png)
-Figure 10b: Speed gameplay – moving card
 
-![alt text](imgs/image-28.png)
-Figure 10c: Speed gameplay – Draw new card
+<!-- ![alt text](imgs/image-27.png) -->
+<figure class="image">
+  <img src="imgs/image-27.png">
+  <figcaption>Figure 10b: Speed gameplay – moving card
+</figcaption>
+</figure>
+
+
+<!-- ![alt text](imgs/image-28.png) -->
+<figure class="image">
+  <img src="imgs/image-28.png">
+  <figcaption>Figure 10c: Speed gameplay – Draw new card
+</figcaption>
+</figure>
+
 
 The above screenshots are the gameplay of Speed. From Figures 10a and 10b, the player can place his Heart 10 into the left-hand side piles. The player can play the game by dragging
 
 the card to it. From Figure 10c, since no more cards can place by either Ai or the player, the player can press the covered card to draw a new card from it and continue the game.
 
-![alt text](imgs/image-29.png)
-Figure 11a: Ending page – Win
+<!-- ![alt text](imgs/image-29.png) -->
+<figure class="image">
+  <img src="imgs/image-29.png">
+  <figcaption>Figure 11a: Ending page – Win
+</figcaption>
+</figure>
 
-![alt text](imgs/image-30.png)
-Figure 11b: Ending page – Lose
+
+<!-- ![alt text](imgs/image-30.png) -->
+<figure class="image">
+  <img src="imgs/image-30.png">
+  <figcaption>Figure 11b: Ending page – Lose
+</figcaption>
+</figure>
+
 
 The above screenshots are the ending page. After playing Black Jack or Speed, the ending page will display "Win” or “Lose” according to player status that shown in Figures 11a and 11b. The number of wins and losses will also upload and stored on the server.
