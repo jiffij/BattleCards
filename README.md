@@ -1,7 +1,7 @@
 # BattleCards
 
-Application Structure
-![alt text](imgs/imgs/flow.png)
+## Application Structure
+![alt text](imgs/flow.png)
 The proposed game flow of our system involves a series of steps to enable users to access and participate in various card games. To begin with, users are required to log in using their Google account. In the event that they are not registered, they will be directed to a registration page on Firebase Authentication. Once logged in, players can select their preferred card game and game mode. Depending on the selected game mode, users may be prompted to either create or join a room if they wish to play with other users. In the case of private rooms, a password will be required for entry. Alternatively, for games involving AI or random gameplay, users will be able to enter the game immediately. Following the game, a result page will be displayed, showing the user's records and providing an option to share their achievements with friends via Gmail or WhatsApp.
 ![alt text](imgs/image.png)
 The system structure for our game app is illustrated in the figure above. It comprises an Android app (client) and Firebase (server and database). Firebase offers a range of services such as authentication, Firestore, Realtime Database, and messaging service for notification, all of which will be utilized in our app. To ensure user accountability, we require users to sign in with their Google account, given its widespread usage and convenience. User profile and records are stored in Firestore database, while a separate Realtime Database is used for gameplay. This database will synchronize all changes made by clients, for example, when a user receives or uses a card, other players listening will receive the updates. Finally, the client utilize the GPS provider to obtain its current position and upload the coordinates to the Realtime Database. If players are searching for nearby players, the app will read from the database and display only those within a 20 km radius.
@@ -12,7 +12,7 @@ The below figures are the expected user interface of our application.
 ![alt text](imgs/image-4.png)
 ![alt text](imgs/image-5.png)
 
-Data Storage
+## Data Storage
 For the secure and organized storage of user data, we have opted to use Firebase Firestore. Our data structure involves the creation of a "user" collection, which utilize the "document" data type to store personal information for each player. To facilitate efficient data management, we store the data in a map format. By using this approach, we can ensure that user data is stored, retrieved, and updated in a reliable and efficient manner.
 
 ![alt text](imgs/image-6.png)
@@ -28,8 +28,8 @@ With the correct accessing path, the data can be retrieved as a map (eg. data) a
 ![alt text](imgs/image-9.png)
 
 
-Specific Android Features
-Firebase Authentication
+## Specific Android Features
+### Firebase Authentication
 We plan to integrate Firebase Authentication with Google Login into the game that can provide many benefits to both the developer and the players. By using this authentication method, players can easily sign in to the game using their existing Google account, which eliminates the need for them to create a new set of login credentials. This can increase the adoption rate of the game as users are more likely to sign up and start playing if they don't have to go through the hassle of creating a new account. Additionally, Firebase Authentication provides a secure and scalable solution for managing user authentication, which can help protect user data and prevent unauthorized access to the game. From a developer's perspective, Firebase Authentication with Google Login can provide a streamlined and efficient way to manage user authentication, allowing them to focus on other aspects of the game. Overall, integrating Firebase Authentication with Google Login can lead to a better user experience and increased user retention in Android card games.
 
 
@@ -42,20 +42,20 @@ We have implemented a location listener and a thread to update the location of t
 This approach not only provides an engaging and interactive experience for players but also leverages the power of Firebase Realtime Database to store and retrieve location data efficiently and in real-time, ensuring that the app remains responsive and up-to-date. By leveraging the latest technologies, the app offers a seamless and enjoyable experience for players seeking to match and play against nearby opponents.
 
 
-Animation
+### Animation
 In our implementation we first create a Stage object, which serves as a container for the image actors. We then load the texture for the actors and create a list to hold them. We initialize all 54 image actors, setting their positions, adding them to the stage, and adding them to the list. This step lays the foundation for creating a visually appealing and interactive scene.
 Next, we leverage the SequenceAction class to create a complex animation sequence. We use a series of MoveToAction objects to specify the final position of each image actor and the duration of the movement. We add each MoveToAction to the sequence using the addAction() method, creating a dynamic and visually stimulating movement pattern.
 Finally, we apply the action sequence to each of the image actors by adding the sequence to each actor using the addAction() method. This step allows us to seamlessly integrate the animation sequence with the actors on the stage, creating a cohesive and engaging user experience.
 
 
-Expected results
+## Expected results
 With the goal of delivering a fluid and streamlined gaming experience, the Battle K'ard game app has been created with the end-user in mind. The functionality and features of the app can be roughly divided into three categories.
 The first part of the app pertains to registration. To facilitate a hassle-free registration process, a login page has been incorporated, which allows users to either register a new account or login with their Gmail credentials. The login page prompts users to input their email, password, username, and select an icon of their choice. Upon successful registration, users can proceed to the game screen and commence playing.
 The second part of the app is dedicated to entertainment. The selection screen provides users with the option to choose their preferred game, along with displaying their current ranking, number of games won, number of game losses, and win rate. Additionally, users can opt to play with friends, thereby enhancing the social aspect of the game. After all the setting players will be able to play the games.
 The final part of the app is playing and sharing with friends. The player can press or drag the cards depending on the game type. We also expected to add some interaction buttons so the players will be able to do some interactions while they are playing the game.
 
 
-Gameplay results
+## Gameplay results
 ![alt text](imgs/image-11.png)
 Figure 1a: Create Room
 
